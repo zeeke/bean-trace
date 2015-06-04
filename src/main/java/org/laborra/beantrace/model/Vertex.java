@@ -3,6 +3,10 @@ package org.laborra.beantrace.model;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Represents a vertex of an object graph.
+ *
+ */
 public class Vertex {
     private Class<?> clazz;
     private String id;
