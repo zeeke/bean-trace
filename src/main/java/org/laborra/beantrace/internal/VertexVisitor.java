@@ -2,7 +2,7 @@ package org.laborra.beantrace.internal;
 
 import org.laborra.beantrace.model.Vertex;
 
-public interface VertexVisitor<T> {
+public interface VertexVisitor {
 
     void visit(Vertex vertex);
 

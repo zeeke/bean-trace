@@ -33,17 +33,13 @@ class AsciiRendererTest {
 
     @Test
     void "one root with two leaves"() {
-        Vertex root = new Vertex(StringWriter, "root")
-        root.references << new Edge("fieldName", new Vertex(StringWriter, "leaf1"))
-        root.references << new Edge("fieldName", new Vertex(StringWriter, "leaf1"))
+        Vertex root = RendererTestUtils.basicTree()
 
-        when:
         sut.render(root)
 
-        then:
         assert writer.toString() == """\
-                StringWriter@root
-                   |-- fieldName : StringWriter@leaf1
-                   |-- fieldName : StringWriter@leaf1""".stripIndent()
+                Object@root
+                   |-- field1 : Object@leaf1
+                   |-- field2 : Object@leaf2""".stripIndent()
     }
 }

@@ -4,9 +4,8 @@ import org.laborra.beantrace.model.Vertex;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
-public class CollectorVisitor implements VertexVisitor<List<Vertex>> {
+public class CollectorVisitor implements VertexVisitor {
 
     private final Collection<Vertex> result = new LinkedList<>();
 
