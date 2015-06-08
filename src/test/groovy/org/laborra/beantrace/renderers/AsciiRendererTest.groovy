@@ -37,9 +37,11 @@ class AsciiRendererTest {
 
         sut.render(root)
 
-        assert writer.toString() == """\
-                Object@root
-                   |-- field1 : Object@leaf1
-                   |-- field2 : Object@leaf2""".stripIndent()
+
+        def result = writer.toString()
+
+        assert result.contains("Object@root")
+        assert result.contains("|-- field1 : Object@leaf1")
+        assert result.contains("|-- field2 : Object@leaf2")
     }
 }

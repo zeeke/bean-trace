@@ -5,8 +5,9 @@ import org.junit.Test
 import org.laborra.beantrace.model.Attribute
 import org.laborra.beantrace.model.Vertex
 
+import static org.hamcrest.Matchers.containsString
 import static org.junit.Assert.assertEquals
-
+import static org.junit.Assert.assertThat
 
 class JsonRendererTest {
 
@@ -37,19 +38,10 @@ class JsonRendererTest {
 
         sut.render(vertex)
 
-        assertEquals(writer.toString(), '{nodes: [' +
-                '{id: "root", type: "java.lang.Object", attributes: {}}, ' +
-                '{id: "leaf1", type: "java.lang.Object", attributes: {}}, ' +
-                '{id: "leaf2", type: "java.lang.Object", attributes: {}}' +
-                '], links: [{source: 0, target: 1}, {source: 0, target: 2}]}')
+        String result = writer.toString()
+        assertThat(result, containsString('{id: "root", type: "java.lang.Object", attributes: {}}'))
+        assertThat(result, containsString('{id: "leaf1", type: "java.lang.Object", attributes: {}}'))
+        assertThat(result, containsString('{id: "leaf2", type: "java.lang.Object", attributes: {}}'))
+        assertThat(result, containsString('[{source: 0, target: 1}, {source: 0, target: 2}]'))
     }
-
-//    static Vertex makeVertex(String id, Map<String, String> attributes = [:], Map<String, String>) {
-//
-//        return new Vertex(
-//                Object.class,
-//                id,
-//                attributes.collect { k, v -> new Attribute<Object>(k, v) }
-//        )
-//    }
 }
