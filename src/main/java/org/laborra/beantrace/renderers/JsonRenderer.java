@@ -11,7 +11,6 @@ import org.laborra.beantrace.model.Attribute;
 import org.laborra.beantrace.model.Edge;
 import org.laborra.beantrace.model.Vertex;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.*;
@@ -46,7 +45,6 @@ public class JsonRenderer implements GraphRenderer {
         });
 
         final Iterable<String> verticesAsJson = Iterables.transform(vertices, new Function<Vertex, String>() {
-            @Nullable
             @Override
             public String apply(Vertex input) {
                 return vertexAsJson(input);
@@ -54,7 +52,6 @@ public class JsonRenderer implements GraphRenderer {
         });
 
         final Iterable<String> edgesAsJson = Iterables.transform(edgeMap.keySet(), new Function<Edge, String>() {
-            @Nullable
             @Override
             public String apply(Edge input) {
                 return edgeAsJson(edgeMap, vertexToIndexMap, input);

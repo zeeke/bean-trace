@@ -29,10 +29,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.google.guava:guava:18.0',
-            'org.reflections:reflections:0.9.9',
-            'org.slf4j:slf4j-api:1.7.9',
-            'commons-beanutils:commons-beanutils:1.9.2'
+    compile 'com.google.guava:guava:18.0'
 
     testCompile "junit:junit:4.12",
             'org.hamcrest:hamcrest-all:1.3',
