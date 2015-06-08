@@ -3,18 +3,25 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
+        jcenter()
     }
     dependencies {
         classpath "org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.3.1"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.1'
     }
 }
 
 apply plugin: "com.github.kt3k.coveralls"
+apply plugin: 'com.jfrog.bintray'
 
 apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'jacoco'
+
+group = 'org.laborra'
+version = '0.1.0'
 
 repositories {
     mavenLocal()
@@ -33,6 +40,54 @@ dependencies {
             'com.google.guava:guava-testlib:18.0',
             "org.codehaus.groovy:groovy-all:2.4.1",
             "org.spockframework:spock-core:1.0-groovy-2.4"
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourceJar, javadocJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            artifact sourceJar
+            artifact javadocJar
+        }
+    }
+}
+
+bintray {
+    user = bintray_user
+    key = bintray_api_key
+
+    dryRun = true
+    publish = true
+
+    publications = ['mavenJava']
+
+    pkg {
+        repo = 'maven'
+        group = project.group
+        name =  project.name
+        websiteUrl = 'https://github.com/zeeke/bean-trace'
+        vcsUrl = 'https://github.com/zeeke/bean-trace.git'
+        licenses = ['Apache-2.0']
+
+        version {
+            name = project.version
+        }
+    }
 }
 
 jacocoTestReport {
