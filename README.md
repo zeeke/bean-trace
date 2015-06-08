@@ -17,7 +17,7 @@ Below is a simple usage example.
 
 ```java
 
-public static class A {
+class A {
 
     private B b;
 
@@ -26,7 +26,7 @@ public static class A {
     }
 }
 
-public static class B {
+class B {
     private String data;
 
     public B(String data) {
@@ -46,6 +46,12 @@ BeanTraces.printBeanTrace(a)
 
 
 ```
+
+# How it works
+
+The library accept a starting object and visits all its references, recursively and creating an
+internal data structure representing the object graph. Then a configurable renderer puts the data
+ on paper.
 
 # Renderers
 TBD
