@@ -56,5 +56,10 @@ internal data structure representing the object graph. Then a configurable rende
 # Renderers
 TBD
 
+# TODOs
+
+- [ ] Enable scanning of primitive arrays
+- [ ] Improve rendering of ASCII graphs
+
 # License
 TBD
