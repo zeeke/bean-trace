@@ -3,6 +3,7 @@ package org.laborra.beantrace.renderers;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import org.laborra.beantrace.BeanTraceException;
 import org.laborra.beantrace.internal.Graphs;
 import org.laborra.beantrace.internal.VertexVisitor;
@@ -81,7 +82,7 @@ public class JsonRenderer implements GraphRenderer {
         return curly(
                 jsonField("id", subject.getId()),
                 jsonField("type", subject.getClazz().getName()),
-                jsonArrayField("attributes", fields)
+                jsonUnquotedField("attributes", curly(fields))
         );
     }
 
@@ -89,7 +90,7 @@ public class JsonRenderer implements GraphRenderer {
         Integer fromIndex = vertexToIndexMap.get(edgeMap.get(edge));
         Integer toIndex = vertexToIndexMap.get(edge.getTo());
 
-        return curly(jsonIntField("source", fromIndex) + ", " + jsonIntField("target", toIndex));
+        return curly(jsonUnquotedField("source", fromIndex) + ", " + jsonUnquotedField("target", toIndex));
     }
 
     private static String jsonField(String propertyName, String propertyValue) {
@@ -100,11 +101,28 @@ public class JsonRenderer implements GraphRenderer {
         return propertyName + ": [" + Joiner.on(", ").join(values) + "]";
     }
 
+    private static String jsonMapField(String propertyName, Map<String, String> values) {
+
+        final Iterable<String> jsonStringAttributes = Iterables.transform(values.entrySet(), new Function<Map.Entry<String, String>, String>() {
+            @Override
+            public String apply(Map.Entry<String, String> entry) {
+                return jsonField(entry.getKey(), entry.getValue());
+            }
+        });
+
+        return jsonUnquotedField("attributes", curly(jsonStringAttributes));
+    }
+
+    private static String curly(Iterable<String> sources) {
+        ArrayList<String> strings = Lists.newArrayList(sources);
+        return curly(strings.toArray(new String[strings.size()]));
+    }
+
     private static String curly(String ... sources) {
         return "{" + Joiner.on(", ").join(sources) + "}";
     }
 
-    private static String jsonIntField(String propertyName, Integer value) {
+    private static String jsonUnquotedField(String propertyName, Object value) {
         return propertyName + ": " + value;
     }
 }
