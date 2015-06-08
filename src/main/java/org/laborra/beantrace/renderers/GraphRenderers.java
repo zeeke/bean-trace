@@ -8,7 +8,17 @@ package org.laborra.beantrace.renderers;
  * @see org.laborra.beantrace.TraceConfiguration#setGraphRenderer(GraphRenderer)
  */
 public class GraphRenderers {
+
+    /**
+     * Creates a new {@link org.laborra.beantrace.renderers.AsciiRenderer} that prints
+     * the graph to the given appendable.
+     *
+     * @param appendable Where to write the graph
+     * @return the create renderer
+     */
     public static AsciiRenderer newAsciiRenderer(Appendable appendable) {
-        return new AsciiRenderer(appendable);
+        final AsciiRenderer ret = new AsciiRenderer();
+        ret.getConfig().setAppendable(appendable);
+        return ret;
     }
 }

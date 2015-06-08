@@ -8,13 +8,29 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Print the object graph to {@link java.lang.Appendable} specified by the {@link Config},
+ * using ASCII characters.
+ */
 public class AsciiRenderer implements GraphRenderer {
-    private final Appendable appendable;
+
+    private Config config;
 
     private final Set<Vertex> visited = new HashSet<>();
 
-    public AsciiRenderer(Appendable appendable) {
-        this.appendable = appendable;
+    /**
+     * Initialize the renderer using the default configuration.
+     */
+    public AsciiRenderer() {
+        this(new Config());
+    }
+
+    public AsciiRenderer(Config config) {
+        this.config = config;
+    }
+
+    public Config getConfig() {
+        return config;
     }
 
     @Override
@@ -31,25 +47,65 @@ public class AsciiRenderer implements GraphRenderer {
     }
 
     private void renderNode(Vertex vertex, int depth, String prefix) throws IOException {
+        Appendable appendable = config.getAppendable();
         for (int i=0; i<depth; i++) {
             appendable.append("   ");
         }
 
         appendable.append(prefix);
-        appendable.append(vertex.getClazz().getSimpleName()).append("@").append(vertex.getId());
+        appendable.append(vertex.getClazz().getSimpleName());
 
-        if (!visited.contains(vertex)) {
-            visited.add(vertex);
-            final Set<Edge> references = vertex.getReferences();
-            int k = 1;
-            for (Edge reference : references) {
-                appendable.append("\n");
-                renderNode(
-                        reference.getTo(),
-                        depth + 1,
-                        (k == references.size() ? "`-- " : "|-- ") + reference.getName() + " : "
-                );
-            }
+        if (config.isPrintId()) {
+            appendable.append("@").append(vertex.getId());
+        }
+
+        if (visited.contains(vertex)) {
+            return;
+        }
+
+        visited.add(vertex);
+        final Set<Edge> references = vertex.getReferences();
+        int k = 1;
+        for (Edge reference : references) {
+            appendable.append("\n");
+            renderNode(
+                    reference.getTo(),
+                    depth + 1,
+                    (k == references.size() ? "`-- " : "|-- ") + reference.getName() + " : "
+            );
+            k++;
+        }
+    }
+
+    /**
+     * Appendable configuration
+     */
+    public static class Config {
+
+        /**
+         * Where the renderer should write the ASCII graph. Default to {@link System#out}.
+         */
+        private Appendable appendable = System.out;
+
+        /**
+         * Whether or not to print the object identifier.
+         */
+        private boolean printId = false;
+
+        public boolean isPrintId() {
+            return printId;
+        }
+
+        public void setPrintId(boolean printId) {
+            this.printId = printId;
+        }
+
+        public Appendable getAppendable() {
+            return appendable;
+        }
+
+        public void setAppendable(Appendable appendable) {
+            this.appendable = appendable;
         }
     }
 }

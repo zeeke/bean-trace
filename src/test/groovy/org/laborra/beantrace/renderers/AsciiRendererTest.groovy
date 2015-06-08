@@ -1,13 +1,22 @@
 package org.laborra.beantrace.renderers
 
+import org.junit.Before
 import org.junit.Test
 import org.laborra.beantrace.model.Edge
 import org.laborra.beantrace.model.Vertex
 
 class AsciiRendererTest {
 
-    StringWriter writer = new StringWriter()
-    AsciiRenderer sut = new AsciiRenderer(writer)
+    StringWriter writer
+    AsciiRenderer sut
+
+    @Before
+    void setupSUT() {
+        writer = new StringWriter()
+        sut = new AsciiRenderer()
+        sut.config.appendable = writer
+        sut.config.printId = true
+    }
 
     @Test
     void "single node"() {
@@ -41,7 +50,20 @@ class AsciiRendererTest {
         def result = writer.toString()
 
         assert result.contains("Object@root")
-        assert result.contains("|-- field1 : Object@leaf1")
-        assert result.contains("|-- field2 : Object@leaf2")
+        assert result.contains("-- field1 : Object@leaf1")
+        assert result.contains("-- field2 : Object@leaf2")
+    }
+
+    @Test
+    void do_not_print_ids() {
+        Vertex root = RendererTestUtils.basicTree()
+
+        sut.render(root)
+
+        def result = writer.toString()
+
+        assert result.contains("Object")
+        assert result.contains("-- field1 : Object")
+        assert result.contains("-- field2 : Object")
     }
 }

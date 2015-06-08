@@ -16,8 +16,8 @@ class ReadmeTest {
         )
 
         assert stringWriter.toString() == """\
-            A@${System.identityHashCode(a)}
-               `-- b : B@${System.identityHashCode(b)}""".stripIndent()
+            A
+               `-- b : B""".stripIndent()
     }
 
     public static class A {
