@@ -68,7 +68,7 @@ bintray {
     user = bintray_user
     key = bintray_api_key
 
-    dryRun = true
+    dryRun = false
     publish = true
 
     publications = ['mavenJava']
