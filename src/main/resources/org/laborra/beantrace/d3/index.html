@@ -29,26 +29,7 @@
 <h1>Bean Trace Graph</h1>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.js"></script>
 <script>
-        var data={
-            nodes: [
-                { id:0 },
-                { id:1 },
-                { id:2 },
-                { id:3 },
-                { id:4 },
-                { id:5 }
-            ],
-            links: [
-                { source: 1, target: 0 },
-                { source: 2, target: 3 },
-                { source: 3, target: 4 },
-                { source: 4, target: 1 },
-                //{ source: 1, target: 3 },
-                { source: 3, target: 5 },
-                { source: 0, target: 2 }
-
-            ]
-        };
+        var data=###JSON_DATA_TOKEN###;
 
 </script>
 <script type="text/javascript">
@@ -63,7 +44,7 @@ var force = d3.layout.force()
     .on("tick", tick)
     //.charge(function(d) { return d._children ? -d.size / 100 : -30; })
     //.linkDistance(function(d) { return d.target._children ? 80 : 30; })
-    .linkDistance(80)
+    .linkDistance(40)
     .charge(-120)
     .gravity(.05)
     .size([w, h - 160]);
@@ -71,6 +52,19 @@ var force = d3.layout.force()
 var vis = d3.select("body").append("svg:svg")
     .attr("width", w)
     .attr("height", h);
+
+vis.append("svg:defs").selectAll("marker")
+    .data(["end"])
+  .enter().append("svg:marker")
+    .attr("id", String)
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 15)
+    .attr("refY", 0)
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("orient", "auto")
+  .append("svg:path")
+    .attr("d", "M0,-5L10,0L0,5");
 
 root = data.nodes[0];
 
@@ -80,36 +74,39 @@ function update() {
     var nodes = data.nodes;
     var links = data.links;
 
-    // Restart the force layout.
+    // Restart the force layout
     force
       .nodes(nodes)
       .links(links)
       .start();
 
-    // Update the links…
+    // Update the links
     link = vis.selectAll(".link")
-      .data(links, function(d) { return d.target.id; });
+      .data(links)
+      //.attr("class", "link")
+      ;
 
-    // Enter any new links.
+    // Enter any new links
     link.enter().insert("line", ".node")
-      .attr("class", "link");
+      .attr("class", "link")
+      .attr("marker-end", "url(#end)");
 
-    // Exit any old links.
+    // Exit any old links
     link.exit().remove();
 
-    // Update the nodes…
+    // Update the nodes
     node = vis.selectAll(".node")
-        .data(nodes, function(d) { return d.id; })
+        .data(nodes)
         .attr("class", "node");
 
-    // Enter any new nodes.
+    // Enter any new nodes
     node.enter().append("g")
         .style("fill", color)
         .attr("class", "node")
         .call(force.drag);
 
 
-    // Exit any old nodes.
+    // Exit any old nodes
     node.exit().remove();
 
     node.append("circle")
@@ -118,12 +115,11 @@ function update() {
         .style("fill", color);
 
     node.append("text")
-        .attr("x", 12)
-        //.attr("dy", ".35em")
-        .text(function(d) { return d.id; });
+        .attr("y", "-1em")
+        .text(function(d) { return d.type + ":" + d.id; });
 
-    //node.append("title")
-     //   .text(function(d) { return d.id; });
+    node.append("title")
+       .html(nodeTitleHtml);
 }
 
 function tick() {
@@ -139,6 +135,20 @@ function color(d) {
   return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
 }
 
+function nodeTitleHtml(d) {
+    var attributes = d.attributes;
+    if (attributes.length == 0) {
+        return "";
+    }
+
+
+    var ret = "<dl>";
+    for (var key in attributes) {
+        ret += "<dt>" + key + "</dt><dd>" + attributes[key] + "</dd>";
+    }
+
+    ret += "</dl>";
+}
 
 </script>
 </body>

@@ -27,7 +27,7 @@ class JsonRendererTest {
         sut.render(vertex)
 
         assertEquals(writer.toString(), '{nodes: [' +
-                '{id: "single", type: "java.lang.Object", attributes: [prop1: "value1"]}' +
+                '{id: "single", type: "java.lang.Object", attributes: {prop1: "value1"}}' +
                 '], links: []}')
     }
 
@@ -38,9 +38,9 @@ class JsonRendererTest {
         sut.render(vertex)
 
         assertEquals(writer.toString(), '{nodes: [' +
-                '{id: "root", type: "java.lang.Object", attributes: []}, ' +
-                '{id: "leaf1", type: "java.lang.Object", attributes: []}, ' +
-                '{id: "leaf2", type: "java.lang.Object", attributes: []}' +
+                '{id: "root", type: "java.lang.Object", attributes: {}}, ' +
+                '{id: "leaf1", type: "java.lang.Object", attributes: {}}, ' +
+                '{id: "leaf2", type: "java.lang.Object", attributes: {}}' +
                 '], links: [{source: 0, target: 1}, {source: 0, target: 2}]}')
     }
 
