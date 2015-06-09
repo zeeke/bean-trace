@@ -60,6 +60,8 @@ TBD
 
 - [ ] Enable scanning of primitive arrays
 - [ ] Improve rendering of ASCII graphs
+- [ ] Put real examples in README
+- [ ] Object scanner exclusion pattern
 
 # License
 TBD
