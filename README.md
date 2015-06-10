@@ -58,7 +58,8 @@ TBD
 
 # TODOs
 
-- [ ] Enable scanning of primitive arrays
+- [x] Enable scanning of primitive arrays
+- [ ] Rendering of primitive types
 - [ ] Improve rendering of ASCII graphs
 - [ ] Put real examples in README
 - [ ] Object scanner exclusion pattern
