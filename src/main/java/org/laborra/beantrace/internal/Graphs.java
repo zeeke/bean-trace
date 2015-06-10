@@ -39,12 +39,13 @@ public class Graphs {
         if (visited.contains(vertex)) {
             return;
         }
+        visited.add(vertex);
 
         visitor.visit(vertex);
 
         final Set<Edge> references = vertex.getReferences();
         for (Edge reference : references) {
-            traverse(reference.getTo(), visitor);
+            traverse(reference.getTo(), visitor, visited);
         }
     }
 }
