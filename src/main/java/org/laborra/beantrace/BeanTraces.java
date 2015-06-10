@@ -53,7 +53,7 @@ public class BeanTraces {
      */
     public static TraceConfiguration newDefaultConfiguration() {
         final TraceConfiguration ret = new TraceConfiguration();
-        ret.setFieldExclusionStrategy(new FieldExclusionStrategy.DefaultExclusion());
+        ret.setFieldExclusionStrategy(FieldExclusionStrategy.DEFAULT_STRATEGY);
         ret.setGraphRenderer(GraphRenderers.newAsciiRenderer(System.out));
         return ret;
     }

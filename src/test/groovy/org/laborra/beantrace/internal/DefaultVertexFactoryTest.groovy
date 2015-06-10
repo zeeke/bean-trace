@@ -9,7 +9,7 @@ class DefaultVertexFactoryTest {
 
     @Before
     void setupSUT() {
-        sut = new DefaultVertexFactory(new FieldExclusionStrategy.DefaultExclusion())
+        sut = new DefaultVertexFactory(FieldExclusionStrategy.DEFAULT_STRATEGY)
     }
 
     @Test
@@ -17,11 +17,11 @@ class DefaultVertexFactoryTest {
         def subject = new ObjectArray()
         subject.data = [ 10, 20 ] as Object[];
 
-        def vertex = sut.create(subject);
+        def vertex = sut.create(subject).references.first().to;
 
         vertex.attributes.with {
-            assert find { it.name == "0" }.value == 10
-            assert find { it.name == "1" }.value == 10
+            assert it.find { it.name == "0" }.value == 10
+            assert it.find { it.name == "1" }.value == 20
         }
     }
 
@@ -39,8 +39,8 @@ class DefaultVertexFactoryTest {
         assert arrayVertex.references
         arrayVertex.references.with {
             assert size() == 2
-            assert find { it.name == "0" }.to.attributes.first().value == 'v1'
-            assert find { it.name == "0" }.to.attributes.first().value == 'v2'
+            assert it.find { it.name == "0" }.to.attributes.first().value == 'v1'
+            assert it.find { it.name == "1" }.to.attributes.first().value == 'v2'
         }
     }
 
