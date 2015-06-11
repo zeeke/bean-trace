@@ -1,11 +1,13 @@
 package org.laborra.beantrace.internal;
 
+import com.google.common.base.Optional;
 import org.laborra.beantrace.BeanTraceException;
 import org.laborra.beantrace.FieldExclusionStrategy;
 import org.laborra.beantrace.model.Attribute;
 import org.laborra.beantrace.model.Edge;
 import org.laborra.beantrace.model.Vertex;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -61,43 +63,112 @@ public class DefaultVertexFactory implements VertexFactory {
                 throw new BeanTraceException(e);
             }
 
-            addField(ret, field.getName(), value);
+            addField(ret, subject, field, value);
         }
 
         return ret;
     }
 
-    private void addField(Vertex vertex, String fieldName, Object value) {
-
+//    private void addField(Vertex vertex, String fieldName, Object value) {
+    private void addField(Vertex vertex, Object subject, Field field, Object value) {
         if (value == null) {
             return;
         }
 
-        final Class<?> type = value.getClass();
+        final Class<?> type = field.getType();
 
         // Going to extract a strategy ...
         if (type.isPrimitive() || String.class.equals(type) || Integer.class.equals(type)) {
             vertex.getAttributes().add(new Attribute<>(
-                    fieldName,
+                    field.getName(),
                     value
             ));
             return;
         }
 
+        final Optional<Attribute> attributeOptional = AttributeFactory.DEFAULT_FACTORY.make(subject, field, value);
+
+        if (attributeOptional.isPresent()) {
+            vertex.getAttributes().add(attributeOptional.get());
+            return;
+        }
+
         vertex.getReferences().add(new Edge(
-                fieldName,
-                create(value)
+                field.getName(), create(value)
         ));
     }
 
     private void populateArray(Vertex vertex, Object subject) {
 
-        Object[] arraySubject = (Object[]) subject;
+        int arrayLength = Array.getLength(subject);
+        for (int i = 0; i < arrayLength; i++) {
+            Object item = Array.get(subject, i);
 
-        int i = 0;
-        for (Object item : arraySubject) {
-            addField(vertex, i + "", item);
-            i++;
+            if (item == null) {
+                continue;
+            }
+
+            final String fieldName = i + "";
+            if (ReflectUtils.isPrimitive(item.getClass())) {
+                vertex.getAttributes().add(new Attribute<>(fieldName, item));
+                continue;
+            }
+
+            vertex.getReferences().add(new Edge(
+                    fieldName, create(item)
+            ));
+        }
+    }
+
+    /**
+     * Optionally creates a field. If the return value is not present, then the engine
+     * will try to build an {@link org.laborra.beantrace.model.Edge}.
+     */
+    public interface AttributeFactory {
+
+        Optional<Attribute> make(Object object, Field field, Object value);
+
+        public static final AttributeFactory PRIMITIVE_TYPES_FACTORY = new AttributeFactory() {
+
+            @Override
+            public Optional<Attribute> make(Object object, Field field, Object value) {
+                final Class<?> type = field.getType();
+                if (!ReflectUtils.isPrimitive(type)) {
+                    return Optional.absent();
+                }
+
+                return Optional.of(new Attribute(field.getName(), value));
+            }
+        };
+
+        public static final AttributeFactory DEFAULT_FACTORY = new Composite(Arrays.asList(
+                PRIMITIVE_TYPES_FACTORY
+        ));
+
+        /**
+         * This implementation delegates to multiple
+         * {@link org.laborra.beantrace.internal.DefaultVertexFactory.AttributeFactory}. The first not absent
+         * returned value will is the total return value.
+         */
+        public static class Composite implements AttributeFactory {
+
+            private final List<AttributeFactory> delegates;
+
+            public Composite(List<AttributeFactory> delegates) {
+                this.delegates = delegates;
+            }
+
+            @Override
+            public Optional<Attribute> make(Object object, Field field, Object value) {
+                for (AttributeFactory delegate : delegates) {
+                    final Optional<Attribute> make = delegate.make(object, field, value);
+                    if (make.isPresent()) {
+                        return make;
+                    }
+                }
+
+                return Optional.absent();
+            }
         }
     }
 }

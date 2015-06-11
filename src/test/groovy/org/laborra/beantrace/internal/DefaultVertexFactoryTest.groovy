@@ -44,6 +44,17 @@ class DefaultVertexFactoryTest {
         }
     }
 
+    @Test
+    void array_with_null_values() {
+        def vertex = sut.create([0, null, 2] as Integer[])
+
+        vertex.attributes.with {
+            assert it.size() == 2
+            assert it.find { it.name == "0" }.value == 0
+            assert it.find { it.name == "2" }.value == 2
+        }
+    }
+
 }
 
 class ObjectArray {
