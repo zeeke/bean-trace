@@ -110,8 +110,7 @@ function update() {
     node.exit().remove();
 
     node.append("circle")
-        //.attr("class", "node")
-        .attr("r", function(d) { return 6; })
+        .attr("r", function(d) { return 5 + Object.keys(d.attributes).length; })
         .style("fill", color);
 
     node.append("text")
