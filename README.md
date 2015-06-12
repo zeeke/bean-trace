@@ -42,9 +42,6 @@ BeanTraces.printBeanTrace(a)
 // Output:
 //    A
 //       `-- b : B
-
-
-
 ```
 
 # How it works
@@ -54,6 +51,34 @@ internal data structure representing the object graph. Then a configurable rende
  on paper.
 
 # Renderers
+
+The library ships with some default renders that are described below.
+
+## ASCII Renderer
+
+The ASCII renderer is the default one and it render the object graph
+using ASCII characters:
+
+```
+SubjectClass
+   |-- primitiveField1 : value1
+   ...
+   |-- primitiveFieldN : valueN
+   |-- referenceField1 : Class1
+   |      `-- fields_of_referenced_objects
+   |-- referenceField2 : Class2
+   ...
+   `-- referenceFieldM : ClassM
+
+```
+
+The renderer can be configured with a custom Appendable, allowing printing to custom logger, strings or standart output.
+
+
+### Example
+
+D3JS Renderer
+
 TBD
 
 # TODOs
