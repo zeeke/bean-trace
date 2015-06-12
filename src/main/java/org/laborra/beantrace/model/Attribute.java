@@ -2,8 +2,6 @@ package org.laborra.beantrace.model;
 
 /**
  * Represents an attribute of an object.
- *
- * @param <T>
  */
 public class Attribute<T> {
     private String name;
