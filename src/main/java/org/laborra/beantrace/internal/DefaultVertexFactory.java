@@ -69,20 +69,8 @@ public class DefaultVertexFactory implements VertexFactory {
         return ret;
     }
 
-//    private void addField(Vertex vertex, String fieldName, Object value) {
     private void addField(Vertex vertex, Object subject, Field field, Object value) {
         if (value == null) {
-            return;
-        }
-
-        final Class<?> type = field.getType();
-
-        // Going to extract a strategy ...
-        if (type.isPrimitive() || String.class.equals(type) || Integer.class.equals(type)) {
-            vertex.getAttributes().add(new Attribute<>(
-                    field.getName(),
-                    value
-            ));
             return;
         }
 
@@ -136,8 +124,10 @@ public class DefaultVertexFactory implements VertexFactory {
                 if (!ReflectUtils.isPrimitive(type)) {
                     return Optional.absent();
                 }
+                @SuppressWarnings("unchecked")
+                final Optional<Attribute> ret = Optional.of(new Attribute(field.getName(), value));
 
-                return Optional.of(new Attribute(field.getName(), value));
+                return ret;
             }
         };
 
