@@ -100,4 +100,4 @@ jacocoTestReport {
 
 check.dependsOn jacocoTestReport
 
-afterReleaseBuild.dependsOn uploadArchives
+afterReleaseBuild.dependsOn bintrayUpload
