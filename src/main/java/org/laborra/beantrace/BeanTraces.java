@@ -1,9 +1,7 @@
 package org.laborra.beantrace;
 
-import org.laborra.beantrace.internal.DefaultVertexFactory;
 import org.laborra.beantrace.model.Vertex;
 import org.laborra.beantrace.renderers.GraphRenderer;
-import org.laborra.beantrace.renderers.GraphRenderers;
 
 /**
  * Main library entry point.
@@ -40,9 +38,7 @@ public class BeanTraces {
      * @param traceConfiguration The algorithm configuration
      */
     public static void printBeanTrace(Object subject, TraceConfiguration traceConfiguration) {
-        final Vertex vertex = new DefaultVertexFactory(
-                traceConfiguration.getFieldExclusionStrategy()
-        ).create(subject);
+        final Vertex vertex = traceConfiguration.getVertexFactory().create(subject);
         traceConfiguration.getGraphRenderer().render(vertex);
     }
 
@@ -52,10 +48,7 @@ public class BeanTraces {
      * @return the configuration.
      */
     public static TraceConfiguration newDefaultConfiguration() {
-        final TraceConfiguration ret = new TraceConfiguration();
-        ret.setFieldExclusionStrategy(FieldExclusionStrategy.DEFAULT_STRATEGY);
-        ret.setGraphRenderer(GraphRenderers.newAsciiRenderer(System.out));
-        return ret;
+        return TraceConfiguration.makeDefault();
     }
 
 }

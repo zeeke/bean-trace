@@ -1,15 +1,17 @@
 package org.laborra.beantrace.internal
+import org.assertj.core.api.AbstractAssert
 import org.junit.Before
 import org.junit.Test
-import org.laborra.beantrace.FieldExclusionStrategy
+import org.laborra.beantrace.TraceConfiguration
+import org.laborra.beantrace.model.Vertex
 
 class DefaultVertexFactoryTest {
 
-    DefaultVertexFactory sut;
+    VertexFactory sut;
 
     @Before
     void setupSUT() {
-        sut = new DefaultVertexFactory(FieldExclusionStrategy.DEFAULT_STRATEGY)
+        sut = TraceConfiguration.makeDefault().getVertexFactory()
     }
 
     @Test
@@ -55,6 +57,96 @@ class DefaultVertexFactoryTest {
         }
     }
 
+    @Test
+    void strings_field_must_become_an_attribute() {
+        def vertex = sut.create(new StringPropBean(data: 'sample'))
+
+        assert vertex.references.size() == 0
+        assert vertex.attributes.last().value == 'sample'
+    }
+
+    @Test
+    void hash_maps_primitive_to_primitive() {
+        def subject = new HashMap<String, String>()
+        subject.put('K1', 'V1')
+        subject.put('K2', 'V2')
+        def vertex = sut.create(subject)
+
+        VertexAssert.assertThat(vertex)
+                .hasNAttributes(2)
+                .hasAttribute('K1', 'V1')
+                .hasAttribute('K2', 'V2')
+                .hasNReferences(0)
+    }
+
+    @Test
+    void hash_map_object_to_object() {
+        def subject = new LinkedHashMap<Object, Object>()
+        def k1 = new Object()
+        def k2 = new Object()
+        def v1 = new Object()
+        def v2 = new Object()
+
+        subject.put(k1, v1)
+        subject.put(k2, v2)
+        def vertex = sut.create(subject)
+
+        VertexAssert.assertThat(vertex)
+                .hasNAttributes(0)
+                .hasNReferences(2)
+
+        def entry_1 = vertex.references.find { it.name == 'entry_0' }.to
+        VertexAssert.assertThat(entry_1)
+            .hasReference("key", k1)
+            .hasReference("value", v1)
+
+        def entry_2 = vertex.references.find { it.name == 'entry_1' }.to
+        VertexAssert.assertThat(entry_2)
+                .hasReference("key", k2)
+                .hasReference("value", v2)
+    }
+
+    @Test
+    void hash_map_primitive_to_object() {
+
+        def subject = new HashMap<String, Object>()
+        def v1 = new Object()
+        def v2 = new Object()
+        subject.put('K1', v1)
+        subject.put('K2', v2)
+        def vertex = sut.create(subject)
+
+        VertexAssert.assertThat(vertex)
+                .hasNAttributes(0)
+                .hasReference('K1', v1)
+                .hasReference('K2', v2)
+                .hasNReferences(2)
+    }
+
+    @Test
+    void hash_map_object_to_primitive() {
+        def subject = new LinkedHashMap<Object, String>()
+        def k1 = new Object()
+        def k2 = new Object()
+
+        subject.put(k1, "v1")
+        subject.put(k2, "v2")
+        def vertex = sut.create(subject)
+
+        VertexAssert.assertThat(vertex)
+                .hasNAttributes(0)
+                .hasNReferences(2)
+
+        def entry_1 = vertex.references.find { it.name == 'entry_0' }.to
+        VertexAssert.assertThat(entry_1)
+                .hasReference("key", k1)
+                .hasAttribute("value", "v1")
+
+        def entry_2 = vertex.references.find { it.name == 'entry_1' }.to
+        VertexAssert.assertThat(entry_2)
+                .hasReference("key", k2)
+                .hasAttribute("value", "v2")
+    }
 }
 
 class ObjectArray {
@@ -63,4 +155,47 @@ class ObjectArray {
 
 class StringPropBean {
     String data
+}
+
+class VertexAssert extends AbstractAssert<VertexAssert, Vertex> {
+
+    protected VertexAssert(Vertex actual, Class<?> selfType) {
+        super(actual, selfType)
+    }
+
+    public static VertexAssert assertThat(Vertex vertex) {
+        return new VertexAssert(vertex, VertexAssert.class);
+    }
+
+    public VertexAssert hasAttribute(String name, Object value) {
+        def attribute = actual.attributes.find { it.name == name }
+
+        if (attribute == null) {
+            failWithMessage("Vertex does not have attribute $name")
+        }
+
+        assert attribute.value == value
+        return this;
+    }
+
+    public VertexAssert hasReference(String name, Object value) {
+        def reference = actual.references.find { it.name == name }
+
+        if (reference == null) {
+            failWithMessage("Vertex does not have attribute $name")
+        }
+
+        assert reference.to.id == System.identityHashCode(value) + ""
+        return this;
+    }
+
+    public VertexAssert hasNAttributes(int n) {
+        assert actual.attributes.size() == n
+        return this
+    }
+
+    public VertexAssert hasNReferences(int n) {
+        assert actual.references.size() == n
+        return this
+    }
 }

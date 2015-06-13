@@ -40,7 +40,8 @@ dependencies {
             'org.mockito:mockito-all:1.10.19',
             'com.google.guava:guava-testlib:18.0',
             "org.codehaus.groovy:groovy-all:2.4.1",
-            "org.spockframework:spock-core:1.0-groovy-2.4"
+            "org.spockframework:spock-core:1.0-groovy-2.4",
+            'org.assertj:assertj-core:2.1.0'
 }
 
 task sourceJar(type: Jar) {
