@@ -44,4 +44,15 @@ class JsonRendererTest {
         assertThat(result, containsString('{id: "leaf2", type: "java.lang.Object", attributes: {}}'))
         assertThat(result, containsString('[{source: 0, target: 1}, {source: 0, target: 2}]'))
     }
+
+    @Test
+    void escape_attributes() {
+        def vertex = new Vertex(Object, "id1")
+        vertex.attributes << new Attribute("attr1", "a\"a")
+
+        sut.render(vertex)
+
+        String result = writer.toString()
+        assertThat(result, containsString('{id: "id1", type: "java.lang.Object", attributes: {attr1: "a\\"a"}}'))
+    }
 }

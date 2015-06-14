@@ -4,6 +4,8 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.escape.Escaper;
+import com.google.common.escape.Escapers;
 import org.laborra.beantrace.BeanTraceException;
 import org.laborra.beantrace.internal.Graphs;
 import org.laborra.beantrace.internal.VertexVisitor;
@@ -17,6 +19,10 @@ import java.util.*;
 
 public class JsonRenderer implements GraphRenderer {
     private final Writer writer;
+
+    private static final Escaper ESCAPER = Escapers.builder()
+                .addEscape('"', "\\\"")
+                .build();
 
     public JsonRenderer(Writer writer) {
         this.writer = writer;
@@ -91,23 +97,11 @@ public class JsonRenderer implements GraphRenderer {
     }
 
     private static String jsonField(String propertyName, String propertyValue) {
-        return propertyName + ": \"" + propertyValue + "\"";
+        return propertyName + ": \"" + ESCAPER.escape(propertyValue) + "\"";
     }
 
     private static String jsonArrayField(String propertyName, Iterable<String> values) {
         return propertyName + ": [" + Joiner.on(", ").join(values) + "]";
-    }
-
-    private static String jsonMapField(String propertyName, Map<String, String> values) {
-
-        final Iterable<String> jsonStringAttributes = Iterables.transform(values.entrySet(), new Function<Map.Entry<String, String>, String>() {
-            @Override
-            public String apply(Map.Entry<String, String> entry) {
-                return jsonField(entry.getKey(), entry.getValue());
-            }
-        });
-
-        return jsonUnquotedField("attributes", curly(jsonStringAttributes));
     }
 
     private static String curly(Iterable<String> sources) {
