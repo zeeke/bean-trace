@@ -1,6 +1,7 @@
 package org.laborra.beantrace.renderers;
 
 import org.laborra.beantrace.BeanTraceException;
+import org.laborra.beantrace.model.Attribute;
 import org.laborra.beantrace.model.Edge;
 import org.laborra.beantrace.model.Vertex;
 
@@ -48,9 +49,7 @@ public class AsciiRenderer implements GraphRenderer {
 
     private void renderNode(Vertex vertex, int depth, String prefix) throws IOException {
         Appendable appendable = config.getAppendable();
-        for (int i=0; i<depth; i++) {
-            appendable.append("   ");
-        }
+        indent(depth, appendable);
 
         appendable.append(prefix);
         appendable.append(vertex.getClazz().getSimpleName());
@@ -64,16 +63,36 @@ public class AsciiRenderer implements GraphRenderer {
         }
 
         visited.add(vertex);
+
+        final Set<Attribute> attributes = vertex.getAttributes();
         final Set<Edge> references = vertex.getReferences();
+
         int k = 1;
+        for (Attribute attribute : attributes) {
+            appendable.append("\n");
+            indent(depth + 1, appendable);
+            appendable.append(k == references.size() + attributes.size() ? "`-- " : "|-- ")
+                    .append(attribute.getName())
+                    .append(" : ")
+                    .append(attribute.getValue().toString());
+
+            k++;
+        }
+
         for (Edge reference : references) {
             appendable.append("\n");
             renderNode(
                     reference.getTo(),
                     depth + 1,
-                    (k == references.size() ? "`-- " : "|-- ") + reference.getName() + " : "
+                    (k == references.size() + attributes.size() ? "`-- " : "|-- ") + reference.getName() + " : "
             );
             k++;
+        }
+    }
+
+    private void indent(int depth, Appendable appendable) throws IOException {
+        for (int i=0; i<depth; i++) {
+            appendable.append("   ");
         }
     }
 
