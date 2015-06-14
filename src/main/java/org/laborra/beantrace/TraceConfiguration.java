@@ -65,14 +65,9 @@ public class TraceConfiguration {
         ret.vertexFactory  = new DefaultVertexFactory(new VertexHandler.Composite(ret.vertexHandlers));
         ret.vertexFieldPopulator = new VertexFieldPopulator(ret.vertexFactory);
 
-
-        ret.vertexHandlers.add(
-                new VertexHandler.ArrayHandler(ret.vertexFieldPopulator)
-        );
-
-        ret.vertexHandlers.add(
-                new VertexHandler.MapVertexHandler(ret.vertexFieldPopulator)
-        );
+        ret.vertexHandlers.add(new VertexHandler.ArrayHandler(ret.vertexFieldPopulator));
+        ret.vertexHandlers.add(new VertexHandler.MapVertexHandler(ret.vertexFieldPopulator));
+        ret.vertexHandlers.add(new VertexHandler.ClassTypeHandler(ret.vertexFieldPopulator));
 
         ret.vertexHandlers.add(
                 new FieldHandler(

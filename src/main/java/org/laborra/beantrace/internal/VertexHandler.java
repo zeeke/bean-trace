@@ -127,4 +127,19 @@ public interface VertexHandler {
         }
     }
 
+    public static class ClassTypeHandler extends TypeBasedHandler<Class> {
+
+        private final VertexFieldPopulator vertexFieldPopulator;
+
+        public ClassTypeHandler(VertexFieldPopulator vertexFieldPopulator) {
+            super(Class.class);
+            this.vertexFieldPopulator = vertexFieldPopulator;
+        }
+
+        @Override
+        protected void typedHandle(Vertex vertex, Class subject) {
+            vertexFieldPopulator.addField(vertex, "name", subject.getName());
+        }
+    }
+
 }

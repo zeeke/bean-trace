@@ -42,6 +42,7 @@ BeanTraces.printBeanTrace(a)
 // Output:
 //    A
 //       `-- b : B
+//          `-- data : A string data
 ```
 
 # How it works

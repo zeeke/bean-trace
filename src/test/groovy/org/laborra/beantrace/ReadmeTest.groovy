@@ -28,7 +28,8 @@ class ReadmeTest {
 
         assert stringWriter.toString() == """\
             A
-               `-- b : B""".stripIndent()
+               `-- b : B
+                  `-- data : A string data""".stripIndent()
     }
 
     @Test
