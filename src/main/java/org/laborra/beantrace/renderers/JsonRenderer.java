@@ -8,7 +8,6 @@ import com.google.common.escape.Escaper;
 import com.google.common.escape.Escapers;
 import org.laborra.beantrace.BeanTraceException;
 import org.laborra.beantrace.internal.Graphs;
-import org.laborra.beantrace.internal.VertexVisitor;
 import org.laborra.beantrace.model.Attribute;
 import org.laborra.beantrace.model.Edge;
 import org.laborra.beantrace.model.Vertex;
@@ -32,23 +31,7 @@ public class JsonRenderer implements GraphRenderer {
     public void render(Vertex subject) {
 
         final Collection<Vertex> vertices = Graphs.collectAllVertices(subject);
-        final HashMap<Vertex, Integer> vertexToIndexMap = new HashMap<>();
-        final HashMap<Edge, Vertex> edgeMap = new HashMap<>();
-
-        int i=0;
-        for (Vertex vertex : vertices) {
-            vertexToIndexMap.put(vertex, i);
-            i++;
-        }
-
-        Graphs.traverse(subject, new VertexVisitor() {
-            @Override
-            public void visit(Vertex vertex) {
-                for (Edge edge : vertex.getReferences()) {
-                    edgeMap.put(edge, vertex);
-                }
-            }
-        });
+        final Map<Vertex, Integer> vertexToIndexMap = Graphs.mapVerticesToIndex(vertices);
 
         final Iterable<String> verticesAsJson = Iterables.transform(vertices, new Function<Vertex, String>() {
             @Override
@@ -56,6 +39,8 @@ public class JsonRenderer implements GraphRenderer {
                 return vertexAsJson(input);
             }
         });
+
+        final Map<Edge, Vertex> edgeMap = Graphs.mapEdgeToStartingVertex(subject);
 
         final Iterable<String> edgesAsJson = Iterables.transform(edgeMap.keySet(), new Function<Edge, String>() {
             @Override
@@ -89,7 +74,7 @@ public class JsonRenderer implements GraphRenderer {
         );
     }
 
-    private static String edgeAsJson(HashMap<Edge, Vertex> edgeMap, HashMap<Vertex, Integer> vertexToIndexMap, Edge edge) {
+    private static String edgeAsJson(Map<Edge, Vertex> edgeMap, Map<Vertex, Integer> vertexToIndexMap, Edge edge) {
         Integer fromIndex = vertexToIndexMap.get(edgeMap.get(edge));
         Integer toIndex = vertexToIndexMap.get(edge.getTo());
 

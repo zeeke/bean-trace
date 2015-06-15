@@ -3,9 +3,7 @@ package org.laborra.beantrace.internal;
 import org.laborra.beantrace.model.Edge;
 import org.laborra.beantrace.model.Vertex;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Utility class to interact with vertex graphs.
@@ -47,5 +45,28 @@ public class Graphs {
         for (Edge reference : references) {
             traverse(reference.getTo(), visitor, visited);
         }
+    }
+
+    public static Map<Edge, Vertex> mapEdgeToStartingVertex(Vertex subject) {
+        final Map<Edge, Vertex> edgeMap = new HashMap<>();
+        traverse(subject, new VertexVisitor() {
+            @Override
+            public void visit(Vertex vertex) {
+                for (Edge edge : vertex.getReferences()) {
+                    edgeMap.put(edge, vertex);
+                }
+            }
+        });
+        return edgeMap;
+    }
+
+    public static Map<Vertex, Integer> mapVerticesToIndex(Collection<Vertex> vertices) {
+        final Map<Vertex, Integer> vertexToIndexMap = new HashMap<>();
+        int i=0;
+        for (Vertex vertex : vertices) {
+            vertexToIndexMap.put(vertex, i);
+            i++;
+        }
+        return vertexToIndexMap;
     }
 }
