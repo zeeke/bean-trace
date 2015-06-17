@@ -1,8 +1,10 @@
-# Introduction
+# Bean Trace
 
 [![Build Status](https://travis-ci.org/zeeke/bean-trace.svg?branch=master)](https://travis-ci.org/zeeke/bean-trace)
 [![Coverage Status](https://coveralls.io/repos/zeeke/bean-trace/badge.svg?branch=master)](https://coveralls.io/r/zeeke/bean-trace?branch=master)
-[![Download](https://api.bintray.com/packages/zeeke/maven/bean-trace/images/download.svg) ](https://bintray.com/zeeke/maven/bean-trace/_latestVersion)
+[![Download](https://api.bintray.com/packages/zeeke/maven/bean-trace/images/download.svg) ](https://bintray.com/zeaeke/maven/bean-trace/_latestVersion)
+
+## Introduction
 
 Bean Traces allows you to print in a user friendly manner an object and all its references.
 This practice can be usefule in several situations:
@@ -11,7 +13,7 @@ This practice can be usefule in several situations:
      with runtime objects.
  - **Debug**: Find what is going wrong with the architecture by drawing down an object graph.
 
-# Example
+## Example
 
 Below is a simple usage example.
 
@@ -45,17 +47,17 @@ BeanTraces.printBeanTrace(a)
 //          `-- data : A string data
 ```
 
-# How it works
+## How it works
 
 The library accept a starting object and visits all its references, recursively and creating an
 internal data structure representing the object graph. Then a configurable renderer puts the data
  on paper.
 
-# Renderers
+## Renderers
 
 The library ships with some default renders that are described below.
 
-## ASCII Renderer
+### ASCII Renderer
 
 The ASCII renderer is the default one and it render the object graph
 using ASCII characters:
@@ -76,23 +78,23 @@ SubjectClass
 The renderer can be configured with a custom Appendable, allowing printing to custom logger, strings or standart output.
 
 
-### Example
+#### Example
 
-## Graphviz
-
-TBD
-
-## D3JS Renderer
+### Graphviz
 
 TBD
 
-# TODOs
+### D3JS Renderer
+
+TBD
+
+## TODOs
 
 - [x] Enable scanning of primitive arrays
-- [ ] Rendering of primitive types
+- [x] Rendering of primitive types
 - [ ] Improve rendering of ASCII graphs
 - [ ] Put real examples in README
-- [ ] Object scanner exclusion pattern
+- [x] Object scanner exclusion pattern
 
-# License
+## License
 TBD
