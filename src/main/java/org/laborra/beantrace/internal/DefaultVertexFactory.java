@@ -1,5 +1,6 @@
 package org.laborra.beantrace.internal;
 
+import org.laborra.beantrace.handlers.VertexHandler;
 import org.laborra.beantrace.model.Attribute;
 import org.laborra.beantrace.model.Edge;
 import org.laborra.beantrace.model.Vertex;

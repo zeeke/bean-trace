@@ -1,5 +1,7 @@
 package org.laborra.beantrace;
 
+import org.laborra.beantrace.handlers.VertexHandler;
+import org.laborra.beantrace.handlers.VertexHandlers;
 import org.laborra.beantrace.internal.*;
 import org.laborra.beantrace.renderers.GraphRenderer;
 import org.laborra.beantrace.renderers.GraphRenderers;
@@ -66,16 +68,8 @@ public class TraceConfiguration {
         ret.vertexFactory  = new DefaultVertexFactory(new VertexHandler.Composite(ret.vertexHandlers));
         ret.vertexFieldPopulator = new VertexFieldPopulator(ret.vertexFactory);
 
-        ret.vertexHandlers.add(new VertexHandler.ArrayHandler(ret.vertexFieldPopulator));
-        ret.vertexHandlers.add(new VertexHandler.MapVertexHandler(ret.vertexFieldPopulator));
-        ret.vertexHandlers.add(new VertexHandler.ClassTypeHandler(ret.vertexFieldPopulator));
+        ret.vertexHandlers.addAll(VertexHandlers.makeDefault(ret));
 
-        ret.vertexHandlers.add(
-                new FieldHandler(
-                        ret.fieldExclusionStrategy,
-                        ret.vertexFieldPopulator
-                )
-        );
         return ret;
     }
 }

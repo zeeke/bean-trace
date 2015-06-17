@@ -1,7 +1,5 @@
 package org.laborra.beantrace
-import org.laborra.beantrace.internal.VertexHandler
-import org.laborra.beantrace.model.Attribute
-import org.laborra.beantrace.model.Vertex
+
 import org.laborra.beantrace.renderers.GraphRenderers
 import org.mockito.Mockito
 
@@ -33,14 +31,3 @@ class ExampleDocs {
     }
 }
 
-class URLTypeHandler extends VertexHandler.TypeBasedHandler<URL> {
-
-    protected URLTypeHandler() {
-        super(URL)
-    }
-
-    @Override
-    protected void typedHandle(Vertex vertex, URL subject) {
-        vertex.attributes << new Attribute("url", subject.toString())
-    }
-}
