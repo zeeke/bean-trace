@@ -54,6 +54,13 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+task exampleDocs(type: JavaExec) {
+    main = 'org.laborra.beantrace.ExampleDocs'
+    classpath = sourceSets.test.runtimeClasspath
+    args temporaryDir.absolutePath
+    dependsOn 'classes'
+}
+
 artifacts {
     archives sourceJar, javadocJar
 }

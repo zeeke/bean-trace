@@ -23,7 +23,7 @@ class ReadmeTest {
 
         BeanTraces.printBeanTrace(
                 a,
-                GraphRenderers.newAsciiRenderer(stringWriter)
+                GraphRenderers.newAscii(stringWriter)
         )
 
         assert stringWriter.toString() == """\
@@ -44,7 +44,7 @@ class ReadmeTest {
 
         BeanTraces.printBeanTrace(
                 c,
-                GraphRenderers.newAsciiRenderer(stringWriter)
+                GraphRenderers.newAscii(stringWriter)
         )
 
         String result = stringWriter.toString()

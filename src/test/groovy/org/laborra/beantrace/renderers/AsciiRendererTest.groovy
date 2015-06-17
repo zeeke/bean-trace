@@ -14,7 +14,7 @@ class AsciiRendererTest {
     void setupSUT() {
         writer = new StringWriter()
         sut = new AsciiRenderer()
-        sut.config.appendable = writer
+        sut.config.output = writer
         sut.config.printId = true
     }
 

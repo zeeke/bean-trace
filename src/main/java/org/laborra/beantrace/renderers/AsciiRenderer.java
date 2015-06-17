@@ -6,6 +6,8 @@ import org.laborra.beantrace.model.Edge;
 import org.laborra.beantrace.model.Vertex;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,22 +42,22 @@ public class AsciiRenderer implements GraphRenderer {
     }
 
     private void renderLinks(Vertex subject) {
-        try {
-            renderNode(subject, 0, "");
+        try (Writer output = config.getOutput()) {
+            renderNode(output, subject, 0, "");
         } catch (IOException e) {
             throw new BeanTraceException(e);
         }
     }
 
-    private void renderNode(Vertex vertex, int depth, String prefix) throws IOException {
-        Appendable appendable = config.getAppendable();
-        indent(depth, appendable);
+    private void renderNode(Writer output, Vertex vertex, int depth, String prefix) throws IOException {
 
-        appendable.append(prefix);
-        appendable.append(vertex.getClazz().getSimpleName());
+        indent(depth, output);
+
+        output.append(prefix);
+        output.append(vertex.getClazz().getSimpleName());
 
         if (config.isPrintId()) {
-            appendable.append("@").append(vertex.getId());
+            output.append("@").append(vertex.getId());
         }
 
         if (visited.contains(vertex)) {
@@ -69,9 +71,9 @@ public class AsciiRenderer implements GraphRenderer {
 
         int k = 1;
         for (Attribute attribute : attributes) {
-            appendable.append("\n");
-            indent(depth + 1, appendable);
-            appendable.append(k == references.size() + attributes.size() ? "`-- " : "|-- ")
+            output.append("\n");
+            indent(depth + 1, output);
+            output.append(k == references.size() + attributes.size() ? "`-- " : "|-- ")
                     .append(attribute.getName())
                     .append(" : ")
                     .append(attribute.getValue().toString());
@@ -80,14 +82,16 @@ public class AsciiRenderer implements GraphRenderer {
         }
 
         for (Edge reference : references) {
-            appendable.append("\n");
+            output.append("\n");
             renderNode(
-                    reference.getTo(),
+                    config.getOutput(), reference.getTo(),
                     depth + 1,
                     (k == references.size() + attributes.size() ? "`-- " : "|-- ") + reference.getName() + " : "
             );
             k++;
         }
+
+        output.flush();
     }
 
     private void indent(int depth, Appendable appendable) throws IOException {
@@ -104,7 +108,7 @@ public class AsciiRenderer implements GraphRenderer {
         /**
          * Where the renderer should write the ASCII graph. Default to {@link System#out}.
          */
-        private Appendable appendable = System.out;
+        private Writer writer = new PrintWriter(System.out);
 
         /**
          * Whether or not to print the object identifier.
@@ -119,12 +123,12 @@ public class AsciiRenderer implements GraphRenderer {
             this.printId = printId;
         }
 
-        public Appendable getAppendable() {
-            return appendable;
+        public Writer getOutput() {
+            return writer;
         }
 
-        public void setAppendable(Appendable appendable) {
-            this.appendable = appendable;
+        public void setOutput(Writer writer) {
+            this.writer = writer;
         }
     }
 }

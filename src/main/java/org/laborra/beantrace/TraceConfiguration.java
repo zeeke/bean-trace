@@ -4,6 +4,7 @@ import org.laborra.beantrace.internal.*;
 import org.laborra.beantrace.renderers.GraphRenderer;
 import org.laborra.beantrace.renderers.GraphRenderers;
 
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class TraceConfiguration {
 
     public static TraceConfiguration makeDefault() {
         final TraceConfiguration ret = new TraceConfiguration();
-        ret.graphRenderer = GraphRenderers.newAsciiRenderer(System.out);
+        ret.graphRenderer = GraphRenderers.newAscii(new PrintWriter(System.out));
 
         ret.fieldExclusionStrategy  = FieldExclusionStrategy.DEFAULT_STRATEGY;
         ret.vertexHandlers = new LinkedList<>();
