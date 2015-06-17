@@ -78,7 +78,11 @@ The renderer can be configured with a custom Appendable, allowing printing to cu
 
 ### Example
 
-D3JS Renderer
+## Graphviz
+
+TBD
+
+## D3JS Renderer
 
 TBD
 
