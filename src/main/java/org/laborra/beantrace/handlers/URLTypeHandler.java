@@ -5,7 +5,7 @@ import org.laborra.beantrace.model.Vertex;
 
 import java.net.URL;
 
-class URLTypeHandler extends VertexHandler.TypeBasedHandler<URL> {
+class URLTypeHandler extends TypeBasedHandler<URL> {
 
     URLTypeHandler() {
         super(URL.class);

@@ -21,6 +21,7 @@ public class VertexHandlers {
 
         return Arrays.asList(
                 new VertexHandler.ArrayHandler(vertexFieldPopulator),
+                new CollectionHandler(vertexFieldPopulator),
                 new VertexHandler.MapVertexHandler(vertexFieldPopulator),
                 new VertexHandler.ClassTypeHandler(vertexFieldPopulator),
                 new URLTypeHandler(),
