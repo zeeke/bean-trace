@@ -20,11 +20,13 @@ public class VertexHandlers {
         final FieldExclusionStrategy fieldExclusionStrategy = config.getFieldExclusionStrategy();
 
         return Arrays.asList(
+                SystemObjectHandler.makeDefault(),
                 new VertexHandler.ArrayHandler(vertexFieldPopulator),
                 new CollectionHandler(vertexFieldPopulator),
                 new VertexHandler.MapVertexHandler(vertexFieldPopulator),
                 new VertexHandler.ClassTypeHandler(vertexFieldPopulator),
                 new URLTypeHandler(),
+
                 new FieldHandler(
                         fieldExclusionStrategy,
                         vertexFieldPopulator
