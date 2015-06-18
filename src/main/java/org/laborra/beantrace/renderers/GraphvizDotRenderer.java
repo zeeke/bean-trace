@@ -58,7 +58,7 @@ public class GraphvizDotRenderer implements GraphRenderer {
             @Override
             public String apply(Vertex input) {
                 final StringBuilder sb = new StringBuilder(input.getId())
-                        .append(" [shape=none margin=0")
+                        .append(" [shape=none margin=0 ")
                         .append("label=<<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\" CELLPADDING=\"4\">")
                         .append("<TR><TD BGCOLOR=\"lightgrey\" COLSPAN=\"2\">")
                         .append(input.getClazz().getSimpleName())
