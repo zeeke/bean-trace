@@ -5,14 +5,11 @@ import org.laborra.beantrace.model.Attribute;
 import org.laborra.beantrace.model.Edge;
 import org.laborra.beantrace.model.Vertex;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class DefaultVertexFactory implements VertexFactory {
 
-    private final Map<Object, Vertex> visitedMap = new HashMap<>();
+    private final Map<Object, Vertex> visitedMap = new IdentityHashMap<>();
     private final VertexHandler vertexHandler;
 
     public DefaultVertexFactory(VertexHandler vertexHandler) {
