@@ -15,7 +15,8 @@ import java.util.Set;
 public class ReflectUtils {
 
     private static final Set<Class> PRIMITIVE_TYPES = Sets.newHashSet(
-            (Class) Integer.class, Long.class, String.class, Boolean.class
+            (Class) Integer.class, Long.class, String.class, Boolean.class, Byte.class,
+            Character.class, Float.class, Double.class, Short.class
     );
 
     public static boolean isPrimitive(Class<?> type) {
