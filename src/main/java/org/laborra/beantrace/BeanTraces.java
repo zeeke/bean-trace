@@ -22,6 +22,8 @@ public class BeanTraces {
     /**
      * Prints an object trace and dumps it to the given renderer.
      *
+     * @see org.laborra.beantrace.renderers.GraphRenderers
+     *
      * @param subject The object to print
      * @param graphRenderer The renderer to use
      */
