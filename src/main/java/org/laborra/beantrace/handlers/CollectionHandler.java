@@ -19,6 +19,7 @@ class CollectionHandler extends TypeBasedHandler<Collection<Object>> {
         int i = 0;
         for (Object item : subject) {
             vertexFieldPopulator.addField(vertex, i + "", item);
+            i++;
         }
     }
 }
