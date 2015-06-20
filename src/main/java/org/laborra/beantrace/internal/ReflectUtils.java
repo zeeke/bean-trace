@@ -19,6 +19,9 @@ public class ReflectUtils {
             Character.class, Float.class, Double.class, Short.class
     );
 
+    /**
+     * Returns true if the givn type is inteded to be "primitive" by the library
+     */
     public static boolean isPrimitive(Class<?> type) {
         return type.isPrimitive() || PRIMITIVE_TYPES.contains(type);
     }
