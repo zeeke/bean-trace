@@ -27,6 +27,8 @@ public class VertexHandlers {
                 new VertexHandler.ClassTypeHandler(vertexFieldPopulator),
                 new URLTypeHandler(),
 
+                StandardJavaHandlers.JAVA_IO_HANDLER,
+
                 new FieldHandler(
                         fieldExclusionStrategy,
                         vertexFieldPopulator
