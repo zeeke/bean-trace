@@ -10,6 +10,7 @@ class ExampleDocs {
     static void main(String ... args) {
         def docs = new ExampleDocs(outputDirectory: new File(args[0]))
 
+        docs.simpleList()
         docs.mockitoAscii()
         docs.mockitoGraphviz()
         docs.beanTraceConfig();
@@ -19,25 +20,32 @@ class ExampleDocs {
         return new File(outputDirectory, fileName)
     }
 
-    private mockitoAscii() {
+    void mockitoAscii() {
         def subject = Mockito.mock(Runnable );
         File outputFile = createOutputFile('mockito_ascii.txt')
         BeanTraces.printBeanTrace(subject, GraphRenderers.newAscii(outputFile));
     }
 
-    private mockitoGraphviz() {
+    void mockitoGraphviz() {
         def subject = Mockito.mock(Runnable);
         File outputFile = createOutputFile('mockito_graphviz.dot')
         BeanTraces.printBeanTrace(subject, GraphRenderers.newGraphviz(outputFile));
     }
 
-    private beanTraceConfig() {
+    void beanTraceConfig() {
         def subject = TraceConfiguration.makeDefault()
         File outputFile = createOutputFile('bean_trace_graphviz.dot')
         BeanTraces.printBeanTrace(subject, GraphRenderers.newGraphviz(outputFile));
 
         outputFile = createOutputFile('bean_trace_ascii.txt')
         BeanTraces.printBeanTrace(subject, GraphRenderers.newAscii(outputFile));
+    }
+
+    void simpleList() {
+        List<String> subject = new LinkedList<>();
+        subject.add("one");
+        subject.add("two");
+        BeanTraces.printBeanTrace(subject);
     }
 }
 
