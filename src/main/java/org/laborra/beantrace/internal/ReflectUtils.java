@@ -20,7 +20,10 @@ public class ReflectUtils {
     );
 
     /**
-     * Returns true if the givn type is inteded to be "primitive" by the library
+     * Returns true if the given type is intended to be "primitive" by the library
+     *
+     * @param type The class to check
+     * @return True if the give type is primitive, false otherwise
      */
     public static boolean isPrimitive(Class<?> type) {
         return type.isPrimitive() || PRIMITIVE_TYPES.contains(type);
