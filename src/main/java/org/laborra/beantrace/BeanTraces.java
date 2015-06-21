@@ -4,7 +4,22 @@ import org.laborra.beantrace.model.Vertex;
 import org.laborra.beantrace.renderers.GraphRenderer;
 
 /**
- * Main library entry point.
+ * <p>Bean Trace enables printing  object relationships in a graphic clear way.
+ * Following examples show the various usage of this library.</p>
+ *
+ * <h2>Basic printing</h2>
+ * <pre class="code"><code class="java">
+ * List&lt;String&gt; subject = new LinkedList&lt;&gt;();
+ * subject.add("one");
+ * subject.add("two");
+ * BeanTraces.printBeanTrace(subject);
+ * </code></pre>
+ * Output:
+ * <pre>
+ * LinkedList
+ *    |-- 1 : two
+ *    `-- 0 : one
+ * </pre>
  */
 public class BeanTraces {
 
