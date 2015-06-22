@@ -11,7 +11,7 @@ class DefaultVertexFactoryTest {
 
     @Before
     void setupSUT() {
-        sut = TraceConfiguration.makeDefault().getVertexFactory()
+        sut = Container.make(new TraceConfiguration()).getVertexFactory()
     }
 
     @Test

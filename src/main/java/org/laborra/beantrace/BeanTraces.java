@@ -1,5 +1,6 @@
 package org.laborra.beantrace;
 
+import org.laborra.beantrace.internal.Container;
 import org.laborra.beantrace.model.Vertex;
 import org.laborra.beantrace.renderers.GraphRenderer;
 
@@ -55,8 +56,9 @@ public class BeanTraces {
      * @param traceConfiguration The algorithm configuration
      */
     public static void printBeanTrace(Object subject, TraceConfiguration traceConfiguration) {
-        final Vertex vertex = traceConfiguration.getVertexFactory().create(subject);
-        traceConfiguration.getGraphRenderer().render(vertex);
+        final Container container = Container.make(traceConfiguration);
+        final Vertex vertex = container.getVertexFactory().create(subject);
+        container.getGraphRenderer().render(vertex);
     }
 
     /**
@@ -65,7 +67,7 @@ public class BeanTraces {
      * @return the configuration.
      */
     public static TraceConfiguration newDefaultConfiguration() {
-        return TraceConfiguration.makeDefault();
+        return new TraceConfiguration();
     }
 
 }
