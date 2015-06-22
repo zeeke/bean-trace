@@ -35,6 +35,14 @@ public class GraphRenderers {
     }
 
     /**
+     * Creates a new {@link AsciiRenderer} that prints the graphs to the
+     * standard output.
+     */
+    public static AsciiRenderer newAscii() {
+        return newAscii(new PrintWriter(System.out));
+    }
+
+    /**
      * Creates a new {@link AsciiRenderer} that prints
      * the graph to the given appendable.
      *
