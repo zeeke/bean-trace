@@ -47,6 +47,13 @@ public class Graphs {
         }
     }
 
+    /**
+     * Return a map view of the graph edges, where each key is an edge and the value is the
+     * vertex the edge start from.
+     *
+     * @param subject The root vertex of the graph
+     * @return The map representing the graph
+     */
     public static Map<Edge, Vertex> mapEdgeToStartingVertex(Vertex subject) {
         final Map<Edge, Vertex> edgeMap = new HashMap<>();
         traverse(subject, new VertexVisitor() {
