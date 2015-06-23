@@ -18,33 +18,16 @@ This practice can be usefule in several situations:
 Below is a simple usage example.
 
 ```java
+List<String> subject = new LinkedList<>();
+subject.add("one");
+subject.add("two");
 
-class A {
+BeanTraces.printBeanTrace(subject);
 
-    private B b;
-
-    public A(B b) {
-        this.b = b;
-    }
-}
-
-class B {
-    private String data;
-
-    public B(String data) {
-        this.data = data;
-    }
-}
-
-B b = new B("A string data")
-A a = new A(b);
-
-BeanTraces.printBeanTrace(a)
-
-// Output:
-//    A
-//       `-- b : B
-//          `-- data : A string data
+// Output
+LinkedList
+   |-- 1 : two
+   `-- 0 : one
 ```
 
 ## How it works
