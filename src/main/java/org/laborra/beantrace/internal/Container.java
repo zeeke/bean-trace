@@ -23,7 +23,11 @@ public class Container {
         ret.fieldExclusionStrategy  = FieldExclusionStrategy.DEFAULT_STRATEGY;
         ret.vertexHandlers = new LinkedList<>();
 
-        ret.vertexFactory  = new DefaultVertexFactory(new VertexHandler.Composite(ret.vertexHandlers));
+        ret.vertexFactory  = new MaxDepthVertexFactoryDecorator(
+                configuration.getMaxDepth(),
+                new DefaultVertexFactory(new VertexHandler.Composite(ret.vertexHandlers))
+        );
+
         ret.vertexFieldPopulator = new VertexFieldPopulator(ret.vertexFactory);
 
         ret.vertexHandlers.addAll(configuration.getCustomHandlers());

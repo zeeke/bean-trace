@@ -21,6 +21,22 @@ import org.laborra.beantrace.renderers.GraphRenderer;
  *    |-- 1 : two
  *    `-- 0 : one
  * </pre>
+ *
+ * <h2>Limiting max depth</h2>
+ * <pre class="code"><code class="java">
+ * List&lt;Object&gt; subject = Arrays.asList(Arrays.asList(Arrays.asList()));
+ * TraceConfiguration config = BeanTraces.newDefaultConfiguration();
+ * config.setMaxDepth(2);
+ * BeanTraces.printBeanTrace(subject, config);
+ * </code></pre>
+ * Output:
+ * <pre>
+ * ArrayList
+ *   `-- 0 : ArrayList
+ *      `-- ... : ...
+ * </pre>
+ *
+ *
  */
 public class BeanTraces {
 

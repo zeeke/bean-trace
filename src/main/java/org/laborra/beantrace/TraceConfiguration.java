@@ -2,6 +2,7 @@ package org.laborra.beantrace;
 
 import org.laborra.beantrace.handlers.VertexHandler;
 import org.laborra.beantrace.renderers.GraphRenderer;
+import org.laborra.beantrace.renderers.GraphRenderers;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -20,7 +21,7 @@ public class TraceConfiguration {
     /**
      * The graph renderer to use.
      */
-    private GraphRenderer graphRenderer;
+    private GraphRenderer graphRenderer = GraphRenderers.newAscii();
     private List<VertexHandler> customHandlers = new LinkedList<>();
     private Integer maxDepth = DEFAULT_MAX_DEPTH;
     private Collection<Class> typeStopping = new LinkedList<>();
@@ -39,5 +40,13 @@ public class TraceConfiguration {
 
     public void setCustomHandlers(List<VertexHandler> customHandlers) {
         this.customHandlers = customHandlers;
+    }
+
+    public Integer getMaxDepth() {
+        return maxDepth;
+    }
+
+    public void setMaxDepth(Integer maxDepth) {
+        this.maxDepth = maxDepth;
     }
 }

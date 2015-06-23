@@ -1,5 +1,6 @@
 package org.laborra.beantrace
 
+import org.laborra.beantrace.internal.Container
 import org.laborra.beantrace.renderers.GraphRenderers
 import org.mockito.Mockito
 
@@ -10,10 +11,11 @@ class ExampleDocs {
     static void main(String ... args) {
         def docs = new ExampleDocs(outputDirectory: new File(args[0]))
 
-        docs.simpleList()
         docs.mockitoAscii()
         docs.mockitoGraphviz()
-        docs.beanTraceConfig();
+        docs.beanTraceConfig()
+        docs.simpleList()
+        docs.max_depth()
     }
 
     private File createOutputFile(String fileName) {
@@ -33,7 +35,7 @@ class ExampleDocs {
     }
 
     void beanTraceConfig() {
-        def subject = TraceConfiguration.makeDefault()
+        def subject = Container.make(BeanTraces.newDefaultConfiguration())
         File outputFile = createOutputFile('bean_trace_graphviz.dot')
         BeanTraces.printBeanTrace(subject, GraphRenderers.newGraphviz(outputFile));
 
@@ -42,10 +44,19 @@ class ExampleDocs {
     }
 
     void simpleList() {
+        println()
         List<String> subject = new LinkedList<>();
         subject.add("one");
         subject.add("two");
         BeanTraces.printBeanTrace(subject);
+    }
+
+    void max_depth() {
+        println()
+        List<Object> subject = Arrays.asList(Arrays.asList(Arrays.asList()));
+        TraceConfiguration config = BeanTraces.newDefaultConfiguration();
+        config.setMaxDepth(2);
+        BeanTraces.printBeanTrace(subject, config);
     }
 }
 
