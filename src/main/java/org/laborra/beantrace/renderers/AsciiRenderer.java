@@ -42,8 +42,10 @@ public class AsciiRenderer implements GraphRenderer {
     }
 
     private void renderLinks(Vertex subject) {
-        try (Writer output = config.getOutput()) {
+        try {
+            final Writer output = config.getOutput();
             renderNode(output, subject, 0, "");
+            output.flush();
         } catch (IOException e) {
             throw new BeanTraceException(e);
         }
