@@ -9,12 +9,14 @@ import org.laborra.beantrace.renderers.GraphRenderer;
  * Following examples show the various usage of this library.</p>
  *
  * <h2>Basic printing</h2>
- * <pre class="code"><code class="java">
+ * <pre>
+ *
  * List&lt;String&gt; subject = new LinkedList&lt;&gt;();
  * subject.add("one");
  * subject.add("two");
  * BeanTraces.printBeanTrace(subject);
- * </code></pre>
+ *
+ * </pre>
  * Output:
  * <pre>
  * LinkedList
@@ -23,12 +25,14 @@ import org.laborra.beantrace.renderers.GraphRenderer;
  * </pre>
  *
  * <h2>Limiting max depth</h2>
- * <pre class="code"><code class="java">
+ * <pre>
+ *
  * List&lt;Object&gt; subject = Arrays.asList(Arrays.asList(Arrays.asList()));
  * TraceConfiguration config = BeanTraces.newDefaultConfiguration();
  * config.setMaxDepth(2);
  * BeanTraces.printBeanTrace(subject, config);
- * </code></pre>
+ *
+ * </pre>
  * Output:
  * <pre>
  * ArrayList
@@ -36,6 +40,26 @@ import org.laborra.beantrace.renderers.GraphRenderer;
  *      `-- ... : ...
  * </pre>
  *
+ * <h2>Type based exclusion</h2>
+ * <p>You can avoid to scan some objects based on their types</p>
+ *
+ * <pre>
+ * List&lt;Object&gt; subject = Arrays.asList(
+ *      ImmutableMap.of("some key", Collections.emptyList()),
+ *      Arrays.asList("element")
+ * );
+ * TraceConfiguration config = BeanTraces.newDefaultConfiguration();
+ * config.setExcludedTypes(Arrays.asList(Map.class));
+ * BeanTraces.printBeanTrace(subject, config);
+ *
+ * </pre>
+ * Output:
+ * <pre>
+ * ArrayList
+ *    |-- 0 : SingletonImmutableBiMap
+ *    `-- 1 : ArrayList
+ *       `-- 0 : element
+ * </pre>
  *
  */
 public class BeanTraces {

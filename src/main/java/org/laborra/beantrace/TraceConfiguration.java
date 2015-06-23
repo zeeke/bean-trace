@@ -24,7 +24,7 @@ public class TraceConfiguration {
     private GraphRenderer graphRenderer = GraphRenderers.newAscii();
     private List<VertexHandler> customHandlers = new LinkedList<>();
     private Integer maxDepth = DEFAULT_MAX_DEPTH;
-    private Collection<Class> typeStopping = new LinkedList<>();
+    private Collection<Class> excludedTypes = new LinkedList<>();
 
     public GraphRenderer getGraphRenderer() {
         return graphRenderer;
@@ -48,5 +48,13 @@ public class TraceConfiguration {
 
     public void setMaxDepth(Integer maxDepth) {
         this.maxDepth = maxDepth;
+    }
+
+    public Collection<Class> getExcludedTypes() {
+        return excludedTypes;
+    }
+
+    public void setExcludedTypes(Collection<Class> excludedTypes) {
+        this.excludedTypes = excludedTypes;
     }
 }

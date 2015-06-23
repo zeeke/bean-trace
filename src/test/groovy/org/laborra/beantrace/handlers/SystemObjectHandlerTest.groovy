@@ -1,7 +1,7 @@
 package org.laborra.beantrace.handlers
 
 import org.junit.Test
-import org.laborra.beantrace.internal.VertexAssert
+import org.laborra.beantrace.test.VertexAssert
 import org.laborra.beantrace.model.Vertex
 
 class SystemObjectHandlerTest {

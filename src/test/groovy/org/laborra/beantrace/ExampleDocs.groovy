@@ -1,5 +1,6 @@
 package org.laborra.beantrace
 
+import com.google.common.collect.ImmutableMap
 import org.laborra.beantrace.internal.Container
 import org.laborra.beantrace.renderers.GraphRenderers
 import org.mockito.Mockito
@@ -15,7 +16,8 @@ class ExampleDocs {
         docs.mockitoGraphviz()
         docs.beanTraceConfig()
         docs.simpleList()
-        docs.max_depth()
+        docs.maxDepth()
+        docs.typeBasedExclusion()
     }
 
     private File createOutputFile(String fileName) {
@@ -51,12 +53,25 @@ class ExampleDocs {
         BeanTraces.printBeanTrace(subject);
     }
 
-    void max_depth() {
+    void maxDepth() {
         println()
         List<Object> subject = Arrays.asList(Arrays.asList(Arrays.asList()));
         TraceConfiguration config = BeanTraces.newDefaultConfiguration();
         config.setMaxDepth(2);
         BeanTraces.printBeanTrace(subject, config);
+    }
+
+    void typeBasedExclusion() {
+        println()
+
+        List<Object> subject = Arrays.asList(
+                ImmutableMap.of("some key", Collections.emptyList()),
+                Arrays.asList("element")
+        )
+        TraceConfiguration config = BeanTraces.newDefaultConfiguration();
+        config.setExcludedTypes(Arrays.asList(Map.class));
+        BeanTraces.printBeanTrace(subject, config);
+
     }
 }
 

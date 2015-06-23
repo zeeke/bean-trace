@@ -2,8 +2,9 @@ package org.laborra.beantrace.internal
 import org.junit.Test
 import org.laborra.beantrace.TraceConfiguration
 import org.laborra.beantrace.model.Vertex
+import org.laborra.beantrace.test.SelfRef
 
-import static org.laborra.beantrace.internal.VertexAssert.assertThat
+import static org.laborra.beantrace.test.VertexAssert.assertThat
 
 class MaxDepthVertexFactoryDecoratorTest {
 
@@ -47,7 +48,6 @@ class MaxDepthVertexFactoryDecoratorTest {
 
         Vertex root = factory.create(subject)
 
-//        GraphRenderers.newAscii().render(root)
         assertThat(root).hasNReferences(1)
 
         Vertex secondLevel = root.references[0].to
@@ -80,10 +80,6 @@ class MaxDepthVertexFactoryDecoratorTest {
 
 }
 
-class SelfRef {
-    SelfRef field
-    String data
-}
 
 class ListRef extends SelfRef {
     List<SelfRef> children

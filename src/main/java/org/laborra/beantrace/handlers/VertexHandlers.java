@@ -24,4 +24,13 @@ public class VertexHandlers {
                 StandardJavaHandlers.JAVA_IO_HANDLER
         );
     }
+
+    /**
+     * Creates an exclusion vertex handler based on the object type.
+     *
+     * @param clazz The type to exclude
+     */
+    public static VertexHandler makeExclusionFor(Class<?> clazz) {
+        return new TypedStopVertexHandler<Object>(clazz);
+    }
 }
