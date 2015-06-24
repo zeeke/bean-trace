@@ -1,5 +1,10 @@
 package org.laborra.beantrace.model;
 
+/**
+ * A link from a vertex to another.
+ *
+ * @see org.laborra.beantrace.model.Vertex
+ */
 public class Edge {
     private String name;
     private Vertex to;
