@@ -57,7 +57,7 @@ The library ships with some default renders that are described below.
 The ASCII renderer is the default one and it render the object graph
 using ASCII characters:
 
-```
+```java
 SubjectClass
    |-- primitiveField1 : value1
    ...
