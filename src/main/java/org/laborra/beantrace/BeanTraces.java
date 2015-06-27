@@ -61,6 +61,19 @@ import org.laborra.beantrace.renderers.GraphRenderer;
  *       `-- 0 : element
  * </pre>
  *
+ * <h2>Use builder for configuring traces</h2>
+ * <pre>
+ *
+ * List&lt;Object&gt; subject = Arrays.asList(Arrays.asList(Arrays.asList()));
+ * TraceConfiguration config = BeanTraces.builder()
+ *      .withMaxDepth(2)
+ *      .withExclusion(Map.class)
+ *      .build();
+ * BeanTraces.printBeanTrace(subject, config);
+ *
+ * </pre>
+ *
+ *
  */
 public class BeanTraces {
 

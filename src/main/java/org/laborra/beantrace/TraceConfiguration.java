@@ -57,4 +57,29 @@ public class TraceConfiguration {
     public void setExcludedTypes(Collection<Class> excludedTypes) {
         this.excludedTypes = excludedTypes;
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private final TraceConfiguration configuration = BeanTraces.newDefaultConfiguration();
+        Builder() {
+        }
+
+        public Builder withExclusion(Class<?> excludedType) {
+            configuration.getExcludedTypes().add(excludedType);
+            return this;
+        }
+
+        public Builder withMaxDepth(Integer maxDepth) {
+            configuration.setMaxDepth(maxDepth);
+            return this;
+        }
+
+        public TraceConfiguration build() {
+            return configuration;
+        }
+    }
 }
