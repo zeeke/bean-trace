@@ -73,8 +73,6 @@ SubjectClass
 The renderer can be configured with a custom Appendable, allowing printing to custom logger, strings or standart output.
 
 
-#### Example
-
 ### Graphviz
 
 A bean trace can be dumped in a text file using the [Graphviz](http://www.graphviz.org/) dot format and transformed later in an image.
