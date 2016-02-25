@@ -44,7 +44,7 @@ public class FieldHandler implements VertexHandler {
                 throw new BeanTraceException(e);
             }
 
-            vertexFieldAdder.addField(vertex, subject, field, value);
+            vertexFieldAdder.addField(vertex, field.getName(), value);
         }
     }
 }

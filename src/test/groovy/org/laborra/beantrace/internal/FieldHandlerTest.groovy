@@ -19,7 +19,7 @@ class FieldHandlerTest {
 
         sut.handle(new Vertex(B, "id"), new B())
 
-        verify(populator, atLeast(2)).addField(Mockito.<Vertex>any(), any(), Mockito.<Field>any(), any())
+        verify(populator, atLeast(2)).addField(Mockito.<Vertex>any(), anyString(), anyString())
     }
 
 
