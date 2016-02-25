@@ -1,6 +1,6 @@
 package org.laborra.beantrace.handlers;
 
-import org.laborra.beantrace.internal.VertexFieldAdder;
+import org.laborra.beantrace.VertexFieldAdder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +31,6 @@ public class VertexHandlers {
      * @param clazz The type to exclude
      */
     public static VertexHandler makeExclusionFor(Class<?> clazz) {
-        return new TypedStopVertexHandler<Object>(clazz);
+        return new TypedStopVertexHandler<>(clazz);
     }
 }

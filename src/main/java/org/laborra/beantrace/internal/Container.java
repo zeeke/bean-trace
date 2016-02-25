@@ -5,6 +5,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.laborra.beantrace.FieldExclusionStrategy;
 import org.laborra.beantrace.TraceConfiguration;
+import org.laborra.beantrace.VertexFieldAdder;
 import org.laborra.beantrace.handlers.VertexHandler;
 import org.laborra.beantrace.handlers.VertexHandlers;
 import org.laborra.beantrace.renderers.GraphRenderer;
@@ -32,7 +33,7 @@ public class Container {
                 new DefaultVertexFactory(new VertexHandler.Composite(ret.vertexHandlers))
         );
 
-        ret.vertexFieldAdder = new VertexFieldAdder(ret.vertexFactory);
+        ret.vertexFieldAdder = new DefaultVertexFieldAdder(ret.vertexFactory);
 
         ret.vertexHandlers.addAll(configuration.getCustomHandlers());
         ret.vertexHandlers.add(makeTypeExclusion(configuration.getExcludedTypes()));

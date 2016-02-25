@@ -1,12 +1,11 @@
 package org.laborra.beantrace.internal
+
 import org.junit.Test
 import org.laborra.beantrace.FieldExclusionStrategy
 import org.laborra.beantrace.model.Vertex
 import org.mockito.Mockito
 
-import java.lang.reflect.Field
-
-import static org.mockito.Matchers.any
+import static org.mockito.Matchers.anyString
 import static org.mockito.Mockito.*
 
 class FieldHandlerTest {
@@ -14,12 +13,12 @@ class FieldHandlerTest {
     @Test
     void inherited_fields() {
         def fieldExclusionStrategy = mock(FieldExclusionStrategy)
-        def populator = mock(VertexFieldAdder)
-        def sut = new FieldHandler(fieldExclusionStrategy, populator)
+        def vertexFieldAdder = mock(DefaultVertexFieldAdder)
+        def sut = new FieldHandler(fieldExclusionStrategy, vertexFieldAdder)
 
         sut.handle(new Vertex(B, "id"), new B())
 
-        verify(populator, atLeast(2)).addField(Mockito.<Vertex>any(), anyString(), anyString())
+        verify(vertexFieldAdder, atLeast(2)).addField(Mockito.<Vertex>any(), anyString(), anyString())
     }
 
 

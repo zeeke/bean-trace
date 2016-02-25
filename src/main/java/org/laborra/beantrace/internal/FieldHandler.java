@@ -2,6 +2,7 @@ package org.laborra.beantrace.internal;
 
 import org.laborra.beantrace.BeanTraceException;
 import org.laborra.beantrace.FieldExclusionStrategy;
+import org.laborra.beantrace.VertexFieldAdder;
 import org.laborra.beantrace.handlers.VertexHandler;
 import org.laborra.beantrace.model.Vertex;
 

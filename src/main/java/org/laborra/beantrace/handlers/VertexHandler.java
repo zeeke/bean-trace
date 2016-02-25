@@ -1,7 +1,7 @@
 package org.laborra.beantrace.handlers;
 
+import org.laborra.beantrace.VertexFieldAdder;
 import org.laborra.beantrace.internal.ReflectUtils;
-import org.laborra.beantrace.internal.VertexFieldAdder;
 import org.laborra.beantrace.model.Edge;
 import org.laborra.beantrace.model.Vertex;
 
