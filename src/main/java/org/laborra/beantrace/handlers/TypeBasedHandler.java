@@ -1,5 +1,6 @@
 package org.laborra.beantrace.handlers;
 
+import org.laborra.beantrace.VertexFieldAdder;
 import org.laborra.beantrace.model.Vertex;
 
 abstract class TypeBasedHandler<T> implements VertexHandler {
@@ -17,9 +18,9 @@ abstract class TypeBasedHandler<T> implements VertexHandler {
 
     @Override
     @SuppressWarnings("unchecked")
-    public void handle(Vertex vertex, Object subject) {
-        typedHandle(vertex, (T) subject);
+    public void handle(Vertex vertex, Object subject, VertexFieldAdder vertexFieldAdder) {
+        typedHandle(vertex, (T) subject, vertexFieldAdder);
     }
 
-    protected abstract void typedHandle(Vertex vertex, T subject);
+    protected abstract void typedHandle(Vertex vertex, T subject, VertexFieldAdder vertexFieldAdder);
 }

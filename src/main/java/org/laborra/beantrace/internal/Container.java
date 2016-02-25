@@ -8,6 +8,7 @@ import org.laborra.beantrace.TraceConfiguration;
 import org.laborra.beantrace.VertexFieldAdder;
 import org.laborra.beantrace.handlers.VertexHandler;
 import org.laborra.beantrace.handlers.VertexHandlers;
+import org.laborra.beantrace.model.Vertex;
 import org.laborra.beantrace.renderers.GraphRenderer;
 
 import java.util.Collection;
@@ -20,7 +21,7 @@ public class Container {
     private List<VertexHandler> vertexHandlers;
     private FieldExclusionStrategy fieldExclusionStrategy;
     private VertexFactory vertexFactory;
-    private VertexFieldAdder vertexFieldAdder;
+    private SettableVertexFieldAdder vertexFieldAdder;
 
     public static Container make(TraceConfiguration configuration) {
         final Container ret = new Container();
@@ -28,20 +29,21 @@ public class Container {
         ret.fieldExclusionStrategy  = FieldExclusionStrategy.DEFAULT_STRATEGY;
         ret.vertexHandlers = new LinkedList<>();
 
+        ret.vertexFieldAdder = new SettableVertexFieldAdder();
         ret.vertexFactory  = new MaxDepthVertexFactoryDecorator(
                 configuration.getMaxDepth(),
-                new DefaultVertexFactory(new VertexHandler.Composite(ret.vertexHandlers))
+                new DefaultVertexFactory(
+                        new VertexHandler.Composite(ret.vertexHandlers),
+                        ret.vertexFieldAdder
+                )
         );
 
-        ret.vertexFieldAdder = new DefaultVertexFieldAdder(ret.vertexFactory);
+        ret.vertexFieldAdder.setDelegate(new DefaultVertexFieldAdder(ret.vertexFactory));
 
         ret.vertexHandlers.addAll(configuration.getCustomHandlers());
         ret.vertexHandlers.add(makeTypeExclusion(configuration.getExcludedTypes()));
-        ret.vertexHandlers.addAll(VertexHandlers.makeDefault(ret.vertexFieldAdder));
-        ret.vertexHandlers.add(new FieldHandler(
-                ret.fieldExclusionStrategy,
-                ret.vertexFieldAdder
-        ));
+        ret.vertexHandlers.addAll(VertexHandlers.makeDefault());
+        ret.vertexHandlers.add(new FieldHandler(ret.fieldExclusionStrategy));
 
         return ret;
     }
@@ -63,5 +65,22 @@ public class Container {
 
     public GraphRenderer getGraphRenderer() {
         return graphRenderer;
+    }
+
+    /**
+     * Tricky implementation to make circular dependency injection
+     */
+    static class SettableVertexFieldAdder implements VertexFieldAdder {
+
+        private VertexFieldAdder delegate;
+
+        public void setDelegate(VertexFieldAdder delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public void addField(Vertex vertex, String fieldName, Object item) {
+            delegate.addField(vertex, fieldName, item);
+        }
     }
 }

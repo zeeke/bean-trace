@@ -1,5 +1,6 @@
 package org.laborra.beantrace.handlers;
 
+import org.laborra.beantrace.VertexFieldAdder;
 import org.laborra.beantrace.model.Vertex;
 
 /**
@@ -12,7 +13,7 @@ class TypedStopVertexHandler<T> extends TypeBasedHandler<T> {
     }
 
     @Override
-    protected void typedHandle(Vertex vertex, T subject) {
+    protected void typedHandle(Vertex vertex, T subject, VertexFieldAdder vertexFieldAdder) {
         // Intentionally left blank
     }
 }

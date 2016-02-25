@@ -1,7 +1,5 @@
 package org.laborra.beantrace.handlers;
 
-import org.laborra.beantrace.VertexFieldAdder;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,16 +7,14 @@ public class VertexHandlers {
 
     /**
      * Builds the default {@link VertexHandler}
-     *
-     * @param vertexFieldAdder The utility object to use when scanning objects
      */
-    public static List<VertexHandler> makeDefault(VertexFieldAdder vertexFieldAdder) {
+    public static List<VertexHandler> makeDefault() {
         return Arrays.asList(
                 SystemObjectHandler.makeDefault(),
-                new VertexHandler.ArrayHandler(vertexFieldAdder),
-                new CollectionHandler(vertexFieldAdder),
-                new VertexHandler.MapVertexHandler(vertexFieldAdder),
-                new VertexHandler.ClassTypeHandler(vertexFieldAdder),
+                new VertexHandler.ArrayHandler(),
+                new CollectionHandler(),
+                new VertexHandler.MapVertexHandler(),
+                new VertexHandler.ClassTypeHandler(),
                 new URLTypeHandler(),
 
                 StandardJavaHandlers.JAVA_IO_HANDLER

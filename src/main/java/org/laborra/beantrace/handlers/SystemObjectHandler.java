@@ -1,5 +1,6 @@
 package org.laborra.beantrace.handlers;
 
+import org.laborra.beantrace.VertexFieldAdder;
 import org.laborra.beantrace.model.Attribute;
 import org.laborra.beantrace.model.Vertex;
 
@@ -31,7 +32,7 @@ public class SystemObjectHandler implements VertexHandler {
     }
 
     @Override
-    public void handle(Vertex vertex, Object subject) {
+    public void handle(Vertex vertex, Object subject, VertexFieldAdder vertexFieldAdder) {
         vertex.getAttributes().add(new Attribute<>(
                 "System",
                 hashCodeToName.get(subject.hashCode())

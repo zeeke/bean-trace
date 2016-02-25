@@ -12,18 +12,16 @@ import java.util.List;
 public class FieldHandler implements VertexHandler {
 
     private final FieldExclusionStrategy fieldExclusionStrategy;
-    private final VertexFieldAdder vertexFieldAdder;
 
-    public FieldHandler(FieldExclusionStrategy fieldExclusionStrategy, VertexFieldAdder vertexFieldAdder) {
+    public FieldHandler(FieldExclusionStrategy fieldExclusionStrategy) {
         this.fieldExclusionStrategy = fieldExclusionStrategy;
-        this.vertexFieldAdder = vertexFieldAdder;
     }
 
     public boolean canHandle(Object subject) {
         return true;
     }
 
-    public void handle(Vertex vertex, Object subject) {
+    public void handle(Vertex vertex, Object subject, VertexFieldAdder vertexFieldAdder) {
         final List<Field> fields = ReflectUtils.getFieldFromClassHierarchy(subject.getClass());
         for (Field field : fields) {
             if (field.isSynthetic()) {

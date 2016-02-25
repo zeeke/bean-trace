@@ -22,7 +22,7 @@ public interface VertexHandler {
     /**
      * Handle the passed vertex based on the subject.
      */
-    void handle(Vertex vertex, Object subject);
+    void handle(Vertex vertex, Object subject, VertexFieldAdder vertexFieldAdder);
 
     class Composite implements VertexHandler {
 
@@ -44,10 +44,10 @@ public interface VertexHandler {
         }
 
         @Override
-        public void handle(Vertex vertex, Object subject) {
+        public void handle(Vertex vertex, Object subject, VertexFieldAdder vertexFieldAdder) {
             for (VertexHandler vertexHandler : delegates) {
                 if (vertexHandler.canHandle(subject)) {
-                    vertexHandler.handle(vertex, subject);
+                    vertexHandler.handle(vertex, subject, vertexFieldAdder);
                     return;
                 }
             }
@@ -56,15 +56,12 @@ public interface VertexHandler {
 
     class MapVertexHandler extends TypeBasedHandler<Map<Object, Object>> {
 
-        private final VertexFieldAdder vertexFieldAdder;
-
-        public MapVertexHandler(VertexFieldAdder vertexFieldAdder) {
+        public MapVertexHandler() {
             super(Map.class);
-            this.vertexFieldAdder = vertexFieldAdder;
         }
 
         @Override
-        public void typedHandle(Vertex vertex, Map<Object, Object> subject) {
+        public void typedHandle(Vertex vertex, Map<Object, Object> subject, VertexFieldAdder vertexFieldAdder) {
             int i = -1;
             for (Map.Entry<Object, Object> entry : subject.entrySet()) {
                 i++;
@@ -88,17 +85,11 @@ public interface VertexHandler {
 
     class ArrayHandler implements VertexHandler {
 
-        private final VertexFieldAdder vertexFieldAdder;
-
-        public ArrayHandler(VertexFieldAdder vertexFieldAdder) {
-            this.vertexFieldAdder = vertexFieldAdder;
-        }
-
         public boolean canHandle(Object subject) {
             return subject.getClass().isArray();
         }
 
-        public void handle(Vertex vertex, Object subject) {
+        public void handle(Vertex vertex, Object subject, VertexFieldAdder vertexFieldAdder) {
             int arrayLength = Array.getLength(subject);
             for (int i = 0; i < arrayLength; i++) {
                 Object item = Array.get(subject, i);
@@ -109,15 +100,12 @@ public interface VertexHandler {
 
     class ClassTypeHandler extends TypeBasedHandler<Class> {
 
-        private final VertexFieldAdder vertexFieldAdder;
-
-        public ClassTypeHandler(VertexFieldAdder vertexFieldAdder) {
+        public ClassTypeHandler() {
             super(Class.class);
-            this.vertexFieldAdder = vertexFieldAdder;
         }
 
         @Override
-        protected void typedHandle(Vertex vertex, Class subject) {
+        protected void typedHandle(Vertex vertex, Class subject, VertexFieldAdder vertexFieldAdder) {
             vertexFieldAdder.addField(vertex, "name", subject.getName());
         }
     }

@@ -1,5 +1,6 @@
 package org.laborra.beantrace.handlers;
 
+import org.laborra.beantrace.VertexFieldAdder;
 import org.laborra.beantrace.model.Attribute;
 import org.laborra.beantrace.model.Vertex;
 
@@ -12,7 +13,7 @@ class URLTypeHandler extends TypeBasedHandler<URL> {
     }
 
     @Override
-    protected void typedHandle(Vertex vertex, URL subject) {
+    protected void typedHandle(Vertex vertex, URL subject, VertexFieldAdder vertexFieldAdder) {
         vertex.getAttributes().add(new Attribute<>("url", subject.toString()));
     }
 }
