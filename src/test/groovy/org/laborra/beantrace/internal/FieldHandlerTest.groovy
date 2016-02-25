@@ -14,7 +14,7 @@ class FieldHandlerTest {
     @Test
     void inherited_fields() {
         def fieldExclusionStrategy = mock(FieldExclusionStrategy)
-        def populator = mock(VertexFieldPopulator)
+        def populator = mock(VertexFieldAdder)
         def sut = new FieldHandler(fieldExclusionStrategy, populator)
 
         sut.handle(new Vertex(B, "id"), new B())

@@ -19,7 +19,7 @@ public class Container {
     private List<VertexHandler> vertexHandlers;
     private FieldExclusionStrategy fieldExclusionStrategy;
     private VertexFactory vertexFactory;
-    private VertexFieldPopulator vertexFieldPopulator;
+    private VertexFieldAdder vertexFieldAdder;
 
     public static Container make(TraceConfiguration configuration) {
         final Container ret = new Container();
@@ -32,14 +32,14 @@ public class Container {
                 new DefaultVertexFactory(new VertexHandler.Composite(ret.vertexHandlers))
         );
 
-        ret.vertexFieldPopulator = new VertexFieldPopulator(ret.vertexFactory);
+        ret.vertexFieldAdder = new VertexFieldAdder(ret.vertexFactory);
 
         ret.vertexHandlers.addAll(configuration.getCustomHandlers());
         ret.vertexHandlers.add(makeTypeExclusion(configuration.getExcludedTypes()));
-        ret.vertexHandlers.addAll(VertexHandlers.makeDefault(ret.vertexFieldPopulator));
+        ret.vertexHandlers.addAll(VertexHandlers.makeDefault(ret.vertexFieldAdder));
         ret.vertexHandlers.add(new FieldHandler(
                 ret.fieldExclusionStrategy,
-                ret.vertexFieldPopulator
+                ret.vertexFieldAdder
         ));
 
         return ret;

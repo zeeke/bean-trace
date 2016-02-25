@@ -11,11 +11,11 @@ import java.lang.reflect.Field;
  * Populates the references and the attributes of the vertex based on the
  * passed field of the object.
  */
-public class VertexFieldPopulator {
+public class VertexFieldAdder {
 
     private final VertexFactory vertexFactory;
 
-    public VertexFieldPopulator(VertexFactory vertexFactory) {
+    public VertexFieldAdder(VertexFactory vertexFactory) {
         this.vertexFactory = vertexFactory;
     }
 

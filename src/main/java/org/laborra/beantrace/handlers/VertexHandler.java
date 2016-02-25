@@ -1,7 +1,7 @@
 package org.laborra.beantrace.handlers;
 
 import org.laborra.beantrace.internal.ReflectUtils;
-import org.laborra.beantrace.internal.VertexFieldPopulator;
+import org.laborra.beantrace.internal.VertexFieldAdder;
 import org.laborra.beantrace.model.Edge;
 import org.laborra.beantrace.model.Vertex;
 
@@ -56,11 +56,11 @@ public interface VertexHandler {
 
     class MapVertexHandler extends TypeBasedHandler<Map<Object, Object>> {
 
-        private final VertexFieldPopulator vertexFieldPopulator;
+        private final VertexFieldAdder vertexFieldAdder;
 
-        public MapVertexHandler(VertexFieldPopulator vertexFieldPopulator) {
+        public MapVertexHandler(VertexFieldAdder vertexFieldAdder) {
             super(Map.class);
-            this.vertexFieldPopulator = vertexFieldPopulator;
+            this.vertexFieldAdder = vertexFieldAdder;
         }
 
         @Override
@@ -73,13 +73,13 @@ public interface VertexHandler {
                 final boolean primitiveKey = ReflectUtils.isPrimitive(key.getClass());
 
                 if (primitiveKey) {
-                    vertexFieldPopulator.addField(vertex, key.toString(), value);
+                    vertexFieldAdder.addField(vertex, key.toString(), value);
                 }
 
                 if (!primitiveKey) {
                     final Vertex entryVertex = new Vertex(Map.Entry.class, System.identityHashCode(entry) + "");
-                    vertexFieldPopulator.addField(entryVertex, "key", key);
-                    vertexFieldPopulator.addField(entryVertex, "value", value);
+                    vertexFieldAdder.addField(entryVertex, "key", key);
+                    vertexFieldAdder.addField(entryVertex, "value", value);
                     vertex.getReferences().add(new Edge("entry_" + i, entryVertex));
                 }
             }
@@ -88,10 +88,10 @@ public interface VertexHandler {
 
     class ArrayHandler implements VertexHandler {
 
-        private final VertexFieldPopulator vertexFieldPopulator;
+        private final VertexFieldAdder vertexFieldAdder;
 
-        public ArrayHandler(VertexFieldPopulator vertexFieldPopulator) {
-            this.vertexFieldPopulator = vertexFieldPopulator;
+        public ArrayHandler(VertexFieldAdder vertexFieldAdder) {
+            this.vertexFieldAdder = vertexFieldAdder;
         }
 
         public boolean canHandle(Object subject) {
@@ -102,23 +102,23 @@ public interface VertexHandler {
             int arrayLength = Array.getLength(subject);
             for (int i = 0; i < arrayLength; i++) {
                 Object item = Array.get(subject, i);
-                vertexFieldPopulator.addField(vertex, i + "", item);
+                vertexFieldAdder.addField(vertex, i + "", item);
             }
         }
     }
 
     class ClassTypeHandler extends TypeBasedHandler<Class> {
 
-        private final VertexFieldPopulator vertexFieldPopulator;
+        private final VertexFieldAdder vertexFieldAdder;
 
-        public ClassTypeHandler(VertexFieldPopulator vertexFieldPopulator) {
+        public ClassTypeHandler(VertexFieldAdder vertexFieldAdder) {
             super(Class.class);
-            this.vertexFieldPopulator = vertexFieldPopulator;
+            this.vertexFieldAdder = vertexFieldAdder;
         }
 
         @Override
         protected void typedHandle(Vertex vertex, Class subject) {
-            vertexFieldPopulator.addField(vertex, "name", subject.getName());
+            vertexFieldAdder.addField(vertex, "name", subject.getName());
         }
     }
 

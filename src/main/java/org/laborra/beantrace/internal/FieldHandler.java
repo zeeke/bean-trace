@@ -11,11 +11,11 @@ import java.util.List;
 public class FieldHandler implements VertexHandler {
 
     private final FieldExclusionStrategy fieldExclusionStrategy;
-    private final VertexFieldPopulator vertexFieldPopulator;
+    private final VertexFieldAdder vertexFieldAdder;
 
-    public FieldHandler(FieldExclusionStrategy fieldExclusionStrategy, VertexFieldPopulator vertexFieldPopulator) {
+    public FieldHandler(FieldExclusionStrategy fieldExclusionStrategy, VertexFieldAdder vertexFieldAdder) {
         this.fieldExclusionStrategy = fieldExclusionStrategy;
-        this.vertexFieldPopulator = vertexFieldPopulator;
+        this.vertexFieldAdder = vertexFieldAdder;
     }
 
     public boolean canHandle(Object subject) {
@@ -44,7 +44,7 @@ public class FieldHandler implements VertexHandler {
                 throw new BeanTraceException(e);
             }
 
-            vertexFieldPopulator.addField(vertex, subject, field, value);
+            vertexFieldAdder.addField(vertex, subject, field, value);
         }
     }
 }
