@@ -8,7 +8,7 @@ import org.laborra.beantrace.model.Vertex;
 import java.lang.reflect.Field;
 
 /**
- * Populated the references and the attributes of the vertex based on the
+ * Populates the references and the attributes of the vertex based on the
  * passed field of the object.
  */
 public class VertexFieldPopulator {

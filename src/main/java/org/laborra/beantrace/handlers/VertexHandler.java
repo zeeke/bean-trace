@@ -24,7 +24,7 @@ public interface VertexHandler {
      */
     void handle(Vertex vertex, Object subject);
 
-    public static class Composite implements VertexHandler {
+    class Composite implements VertexHandler {
 
         private final List<VertexHandler> delegates;
 
@@ -54,7 +54,7 @@ public interface VertexHandler {
         }
     }
 
-    public static class MapVertexHandler extends TypeBasedHandler<Map<Object, Object>> {
+    class MapVertexHandler extends TypeBasedHandler<Map<Object, Object>> {
 
         private final VertexFieldPopulator vertexFieldPopulator;
 
@@ -86,7 +86,7 @@ public interface VertexHandler {
         }
     }
 
-    public static class ArrayHandler implements VertexHandler {
+    class ArrayHandler implements VertexHandler {
 
         private final VertexFieldPopulator vertexFieldPopulator;
 
@@ -107,7 +107,7 @@ public interface VertexHandler {
         }
     }
 
-    public static class ClassTypeHandler extends TypeBasedHandler<Class> {
+    class ClassTypeHandler extends TypeBasedHandler<Class> {
 
         private final VertexFieldPopulator vertexFieldPopulator;
 
