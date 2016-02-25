@@ -91,6 +91,12 @@ and here is the result:
 
 TBD
 
+## Own Example
+
+Here is how the library works, using the tool itself.
+
+![Bean Trace](http://zeeke.github.io/bean-trace/img/bean_trace_graphviz.png)
+
 ## TODOs
 
 - [x] Enable scanning of primitive arrays
