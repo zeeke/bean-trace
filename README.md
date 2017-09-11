@@ -78,11 +78,13 @@ The renderer can be configured with a custom Appendable, allowing printing to cu
 A bean trace can be dumped in a text file using the [Graphviz](http://www.graphviz.org/) dot format and transformed later in an image.
 
 The following code snippet dumps a mocks built with [Mockito](http://mockito.org/):
-```java`
+
+```java
 Runnable subject = Mockito.mock(Runnable);
 File outputFile = new File("output.dot");
 BeanTraces.printBeanTrace(subject, GraphRenderers.newGraphviz(outputFile));
 ```
+
 and here is the result:
 
 ![Mockito Graphviz](http://zeeke.github.io/bean-trace/img/mockito_graphviz.png)
